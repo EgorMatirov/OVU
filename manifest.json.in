@@ -1,0 +1,17 @@
+{
+    "name": "@APP_ID@",
+    "description": "description of OVU",
+    "architecture": "@CLICK_ARCH@",
+    "title": "@APP_NAME@",
+    "hooks": {
+        "OVU": {
+            "apparmor": "OVU.apparmor",
+            "desktop":  "OVU.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Mikhail Ivchenko <ematirov@gmail.com>",
+    "framework" : "ubuntu-sdk-15.04"
+}
+
+
