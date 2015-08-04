@@ -6,4 +6,5 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/backend/modules/OVU/
 )
 
-add_test_OVU(simple)
+add_test_OVU(TitleHandler_test)
+add_test_OVU(EntryHandler_test)

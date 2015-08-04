@@ -18,23 +18,13 @@
   *
   **/
 
-#include "backend.h"
+#include "Element.h"
 
-#include "Feed.h"
-
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
-
-
-void BackendPlugin::registerTypes(const char *uri)
+Element::Element()
 {
-    Q_ASSERT(uri == QLatin1String("OVU"));
-
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
 }
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+Element::ElementType Element::type() const
 {
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
+    return Element::UnsupportedType;
 }
-

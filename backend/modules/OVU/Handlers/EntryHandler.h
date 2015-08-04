@@ -18,23 +18,16 @@
   *
   **/
 
-#include "backend.h"
+#ifndef ENTRY_HANDLER_H
+#define ENTRY_HANDLER_H
 
-#include "Feed.h"
+#include "Handler.h"
 
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
+class EntryHandler : public Handler{
 
+public:
+    explicit EntryHandler();
+    Element *parse(QXmlStreamReader &reader) const override;
+};
 
-void BackendPlugin::registerTypes(const char *uri)
-{
-    Q_ASSERT(uri == QLatin1String("OVU"));
-
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
-}
-
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
-}
-
+#endif // ENTRY_HANDLER_H

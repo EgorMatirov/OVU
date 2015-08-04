@@ -18,23 +18,27 @@
   *
   **/
 
-#include "backend.h"
+#ifndef TITLE_ELEMENT_H
+#define TITLE_ELEMENT_H
 
-#include "Feed.h"
+#include "Element.h"
 
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
+#include <QString>
 
-
-void BackendPlugin::registerTypes(const char *uri)
+class TitleElement : public Element
 {
-    Q_ASSERT(uri == QLatin1String("OVU"));
 
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
-}
+    Q_OBJECT
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
-}
+public:
+    explicit TitleElement(const QString &value = "");
 
+    Element::ElementType type() const override;
+    QString value() const;
+    void setValue(const QString &value);
+
+private:
+    QString m_value;
+};
+
+#endif // TITLE_ELEMENT_H

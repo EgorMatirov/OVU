@@ -18,23 +18,24 @@
   *
   **/
 
-#include "backend.h"
+#include "TitleHandler.h"
 
-#include "Feed.h"
+#include "Elements/TitleElement.h"
 
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
-
-
-void BackendPlugin::registerTypes(const char *uri)
+TitleHandler::TitleHandler()
 {
-    Q_ASSERT(uri == QLatin1String("OVU"));
-
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
 }
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+Element *TitleHandler::parse(QXmlStreamReader &reader) const
 {
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
+    Q_ASSERT(reader.tokenType() == QXmlStreamReader::StartElement);
+    QString value;
+    QXmlStreamReader::TokenType currentToken = reader.readNext();
+    while( !isEndOfElement(reader) && !reader.hasError() ) {
+        if( currentToken == QXmlStreamReader::Characters ) {
+            value+=reader.text();
+        }
+        currentToken = reader.readNext();
+    }
+    return new TitleElement(value);
 }
-

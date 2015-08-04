@@ -18,23 +18,25 @@
   *
   **/
 
-#include "backend.h"
+#include "HandlersMap.h"
 
-#include "Feed.h"
+QMap<QString,Handler*> HandlersMap::handlers = QMap<QString,Handler*>();
+bool HandlersMap::initialized = false;
 
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
-
-
-void BackendPlugin::registerTypes(const char *uri)
+Handler *HandlersMap::handler(const QString &name)
 {
-    Q_ASSERT(uri == QLatin1String("OVU"));
-
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
+    if(!initialized) {
+        initialize();
+    }
+    if(handlers.contains(name)) {
+        return handlers[name];
+    }
+    return new Handler();
 }
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+void HandlersMap::initialize()
 {
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
+    handlers["entry"] = new EntryHandler();
+    handlers["title"] = new TitleHandler();
+    initialized = true;
 }
-

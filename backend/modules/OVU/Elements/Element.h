@@ -18,23 +18,26 @@
   *
   **/
 
-#include "backend.h"
+#ifndef ELEMENT_H
+#define ELEMENT_H
 
-#include "Feed.h"
+#include <QObject>
 
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
-
-
-void BackendPlugin::registerTypes(const char *uri)
+class Element : public QObject
 {
-    Q_ASSERT(uri == QLatin1String("OVU"));
 
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
-}
+    Q_OBJECT
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
-}
+public:
+    enum ElementType {
+        UnsupportedType,
+        TitleType,
+        EntryType
+    };
 
+public:
+    explicit Element();
+    virtual Element::ElementType type() const;
+};
+
+#endif // ELEMENT_H

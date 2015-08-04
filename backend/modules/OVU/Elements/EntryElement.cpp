@@ -18,23 +18,31 @@
   *
   **/
 
-#include "backend.h"
+#include "EntryElement.h"
 
-#include "Feed.h"
-
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
-
-
-void BackendPlugin::registerTypes(const char *uri)
+EntryElement::EntryElement() :
+    m_title(new TitleElement)
 {
-    Q_ASSERT(uri == QLatin1String("OVU"));
-
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
 }
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+EntryElement::~EntryElement()
 {
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
+    delete m_title;
 }
 
+Element::ElementType EntryElement::type() const
+{
+    return Element::EntryType;
+}
+
+TitleElement *EntryElement::title() const
+{
+    return m_title;
+}
+
+void EntryElement::setTitle(TitleElement *value)
+{
+    auto tmp = m_title;
+    m_title = value;
+    delete tmp;
+}

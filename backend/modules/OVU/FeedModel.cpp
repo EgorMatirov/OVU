@@ -18,23 +18,18 @@
   *
   **/
 
-#include "backend.h"
-
-#include "Feed.h"
-
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
+#include "FeedModel.h"
 
 
-void BackendPlugin::registerTypes(const char *uri)
+int FeedModel::rowCount(const QModelIndex &parent) const
 {
-    Q_ASSERT(uri == QLatin1String("OVU"));
-
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
+    Q_UNUSED(parent)
+    return 0;
 }
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+QVariant FeedModel::data(const QModelIndex &index, int role) const
 {
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
+    Q_UNUSED(index)
+    Q_UNUSED(role)
+    return QVariant();
 }
-

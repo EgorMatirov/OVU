@@ -18,23 +18,17 @@
   *
   **/
 
-#include "backend.h"
+#ifndef FEED_MODEL_H
+#define FEED_MODEL_H
 
-#include "Feed.h"
+#include <QAbstractListModel>
 
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
+class FeedModel : public QAbstractListModel {
 
+public:
+    int rowCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
 
-void BackendPlugin::registerTypes(const char *uri)
-{
-    Q_ASSERT(uri == QLatin1String("OVU"));
+};
 
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
-}
-
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
-}
-
+#endif // FEED_MODEL_H

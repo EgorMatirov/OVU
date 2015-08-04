@@ -18,23 +18,24 @@
   *
   **/
 
-#include "backend.h"
+#ifndef HANDLER_H
+#define HANDLER_H
 
-#include "Feed.h"
+#include "Elements/Element.h"
 
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
+#include <QXmlStreamReader>
 
+class Handler {
 
-void BackendPlugin::registerTypes(const char *uri)
-{
-    Q_ASSERT(uri == QLatin1String("OVU"));
+public:
+    explicit Handler();
+    virtual Element *parse(QXmlStreamReader &reader) const;
 
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
-}
+protected:
+    bool isEndOfElement(const QXmlStreamReader &reader) const;
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
-}
+private:
+    static bool test;
+};
 
+#endif // HANDLER_H

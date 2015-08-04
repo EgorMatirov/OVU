@@ -18,23 +18,25 @@
   *
   **/
 
-#include "backend.h"
+#include "TitleElement.h"
 
-#include "Feed.h"
-
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
-
-
-void BackendPlugin::registerTypes(const char *uri)
+TitleElement::TitleElement(const QString &value) :
+    m_value(value)
 {
-    Q_ASSERT(uri == QLatin1String("OVU"));
-
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
 }
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+Element::ElementType TitleElement::type() const
 {
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
+    return ElementType::TitleType;
+}
+
+QString TitleElement::value() const
+{
+    return m_value;
+}
+
+void TitleElement::setValue(const QString &value)
+{
+    m_value = value;
 }
 

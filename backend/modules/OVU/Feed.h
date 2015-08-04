@@ -18,23 +18,37 @@
   *
   **/
 
-#include "backend.h"
+#ifndef FEED_H
+#define FEED_H
 
-#include "Feed.h"
+#include "FeedModel.h"
 
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
+#include <QObject>
+#include <QXmlStreamReader>
 
-
-void BackendPlugin::registerTypes(const char *uri)
+class Feed : public QObject
 {
-    Q_ASSERT(uri == QLatin1String("OVU"));
+    Q_OBJECT
+    Q_PROPERTY( QString source READ source WRITE setSource NOTIFY sourceChanged )
 
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
-}
+    Q_PROPERTY( FeedModel *model READ model NOTIFY modelChanged )
 
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
-}
+public:
+    explicit Feed(QObject *parent = 0);
+    ~Feed();
+    void setSource(const QString &source);
+    QString source() { return m_source; }
+    FeedModel *model();
+
+Q_SIGNALS:
+    void sourceChanged();
+    void modelChanged();
+
+protected:
+    void printError(const QXmlStreamReader &reader) const;
+    QString m_source;
+    FeedModel *m_model;
+};
+
+#endif // FEED_H
 

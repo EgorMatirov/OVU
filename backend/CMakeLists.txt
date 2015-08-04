@@ -2,12 +2,21 @@ add_subdirectory(tests/unit/c++)
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/OVU
 )
 
 set(
     OVUbackend_SRCS
     modules/OVU/backend.cpp
-    modules/OVU/mytype.cpp
+    modules/OVU/Feed.cpp
+    modules/OVU/FeedModel.cpp
+    modules/OVU/Elements/Element.cpp
+    modules/OVU/Elements/EntryElement.cpp
+    modules/OVU/Elements/TitleElement.cpp
+    modules/OVU/Handlers/Handler.cpp
+    modules/OVU/Handlers/HandlersMap.cpp
+    modules/OVU/Handlers/EntryHandler.cpp
+    modules/OVU/Handlers/TitleHandler.cpp
 )
 
 add_library(OVUbackend MODULE
@@ -19,6 +28,8 @@ set_target_properties(OVUbackend PROPERTIES
 
 qt5_use_modules(OVUbackend Gui Qml Quick)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors -pedantic-errors -ansi -Werror -Wextra -Wall -Winit-self -Wold-style-cast -Woverloaded-virtual -Wuninitialized -Wmissing-declarations -Winit-self -std=c++11")
+
 # Copy qmldir file to build dir for running in QtCreator
 add_custom_target(OVUbackend-qmldir ALL
     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/modules/OVU/qmldir ${CMAKE_CURRENT_BINARY_DIR}/OVU
@@ -28,4 +39,3 @@ add_custom_target(OVUbackend-qmldir ALL
 # Install plugin file
 install(TARGETS OVUbackend DESTINATION ${QT_IMPORTS_DIR}/OVU/)
 install(FILES   modules/OVU/qmldir DESTINATION ${QT_IMPORTS_DIR}/OVU/)
-
