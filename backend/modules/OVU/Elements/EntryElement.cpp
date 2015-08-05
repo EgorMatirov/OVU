@@ -21,13 +21,15 @@
 #include "EntryElement.h"
 
 EntryElement::EntryElement() :
-    m_title(new TitleElement)
+    m_title(new TitleElement),
+    m_content(new ContentElement)
 {
 }
 
 EntryElement::~EntryElement()
 {
     delete m_title;
+    delete m_content;
 }
 
 Element::ElementType EntryElement::type() const
@@ -46,3 +48,16 @@ void EntryElement::setTitle(TitleElement *value)
     m_title = value;
     delete tmp;
 }
+
+ContentElement *EntryElement::content() const
+{
+    return m_content;
+}
+
+void EntryElement::setContent(ContentElement *content)
+{
+    auto tmp = m_content;
+    m_content = content;
+    delete tmp;
+}
+

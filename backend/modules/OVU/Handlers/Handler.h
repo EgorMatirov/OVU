@@ -32,7 +32,8 @@ public:
     virtual Element *parse(QXmlStreamReader &reader) const;
 
 protected:
-    bool isEndOfElement(const QXmlStreamReader &reader) const;
+    bool isEndElement(const QXmlStreamReader &reader,
+                        const QString &elementName) const;
 
 private:
     static bool test;

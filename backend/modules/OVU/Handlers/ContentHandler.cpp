@@ -18,24 +18,33 @@
   *
   **/
 
-#include "TitleHandler.h"
+#include "ContentHandler.h"
 
-#include "Elements/TitleElement.h"
-
-TitleHandler::TitleHandler()
+ContentHandler::ContentHandler()
 {
 }
 
-Element *TitleHandler::parse(QXmlStreamReader &reader) const
+Element *ContentHandler::parse(QXmlStreamReader &reader) const
 {
     Q_ASSERT(reader.isStartElement());
     QString value;
+    ContentElement *content = new ContentElement;
+    parseAttributes(content, reader.attributes());
     QXmlStreamReader::TokenType currentToken = reader.readNext();
-    while( !isEndElement(reader,QString("title")) && !reader.hasError() ) {
+    while( !isEndElement(reader,QString("content")) && !reader.hasError() ) {
         if( currentToken == QXmlStreamReader::Characters ) {
             value+=reader.text();
         }
         currentToken = reader.readNext();
     }
-    return new TitleElement(value);
+    content->setValue(value);
+    return content;
+}
+
+void ContentHandler::parseAttributes(ContentElement *content,
+                                     QXmlStreamAttributes attributes) const
+{
+    if(attributes.hasAttribute("type")) {
+        content->setContentType(attributes.value("type").toString());
+    }
 }

@@ -18,36 +18,37 @@
   *
   **/
 
-#ifndef ENTRY_ELEMENT_H
-#define ENTRY_ELEMENT_H
-
-#include "Element.h"
-
-#include "TitleElement.h"
 #include "ContentElement.h"
 
-#include <QString>
-
-class EntryElement : public Element
+ContentElement::ContentElement(const QString &value,
+                               const QString &contentType) :
+    m_value(value),
+    m_contentType(contentType)
 {
+}
 
-    Q_OBJECT
+Element::ElementType ContentElement::type() const
+{
+    return ElementType::ContentType;
+}
 
-public:
-    explicit EntryElement();
-    ~EntryElement();
+QString ContentElement::value() const
+{
+    return m_value;
+}
 
-    Element::ElementType type() const override;
+void ContentElement::setValue(const QString &value)
+{
+    m_value = value;
+}
+QString ContentElement::contentType() const
+{
+    return m_contentType;
+}
 
-    TitleElement *title() const;
-    void setTitle(TitleElement *value);
+void ContentElement::setContentType(const QString &contentType)
+{
+    m_contentType = contentType;
+}
 
-    ContentElement *content() const;
-    void setContent(ContentElement *content);
 
-private:
-    TitleElement *m_title;
-    ContentElement *m_content;
-};
-
-#endif // ENTRY_ELEMENT_H

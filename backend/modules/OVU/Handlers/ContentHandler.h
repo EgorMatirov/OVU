@@ -18,36 +18,23 @@
   *
   **/
 
-#ifndef ENTRY_ELEMENT_H
-#define ENTRY_ELEMENT_H
+#ifndef CONTENT_HANDLER_H
+#define CONTENT_HANDLER_H
 
-#include "Element.h"
+#include "Handler.h"
 
-#include "TitleElement.h"
-#include "ContentElement.h"
+#include "Elements/ContentElement.h"
 
-#include <QString>
+#include <QXmlStreamAttributes>
 
-class EntryElement : public Element
-{
-
-    Q_OBJECT
+class ContentHandler : public Handler {
 
 public:
-    explicit EntryElement();
-    ~EntryElement();
-
-    Element::ElementType type() const override;
-
-    TitleElement *title() const;
-    void setTitle(TitleElement *value);
-
-    ContentElement *content() const;
-    void setContent(ContentElement *content);
-
+    explicit ContentHandler();
+    Element *parse(QXmlStreamReader &reader) const;
 private:
-    TitleElement *m_title;
-    ContentElement *m_content;
+    void parseAttributes(ContentElement *content,
+                         QXmlStreamAttributes attributes) const;
 };
 
-#endif // ENTRY_ELEMENT_H
+#endif // CONTENT_HANDLER_H

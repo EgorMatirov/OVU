@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-04 20:43+0400\n"
+"POT-Creation-Date: 2015-08-05 12:32+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/OVU.qml:51
-msgid "App with backend"
-msgstr ""
-
-#: ../app/OVU.qml:79
-msgid "Tap me!"
-msgstr ""
-
-#: /home/ematirov/Downloads/build-OVU-Ubuntu_Device_GCC_armhf_ubuntu_sdk_15_04_vivid-Default/po/OVU.desktop.in.h:1
+#: /home/ematirov/Downloads/build-OVU-Desktop-Default/po/OVU.desktop.in.h:1
 msgid "OVU"
 msgstr ""

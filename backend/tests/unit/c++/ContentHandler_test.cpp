@@ -20,71 +20,75 @@
 
 #include <QTest>
 
-#include "Handlers/TitleHandler.h"
-#include "Elements/TitleElement.h"
+#include "Handlers/ContentHandler.h"
+#include "Elements/ContentElement.h"
 
-class TitleHandler_Test : public QObject {
+class ContentHandler_Test : public QObject {
     Q_OBJECT
 private slots:
-    void elementIsTitle();
-    void defaultValueIsEmpty();
-    void valueIsCorrect();
+    void elementIsContent();
+    void defaultValueIsEmptyAndContentTypeIsText();
+    void valueAndContentTypeIsCorrect();
     void cleanup();
 private:
-    TitleHandler handler;
+    ContentHandler handler;
     QXmlStreamReader reader;
     void moveToStartElement();
+    bool isStartElement();
 };
 
 
 
-void TitleHandler_Test::elementIsTitle()
+void ContentHandler_Test::elementIsContent()
 {
-    QString data("<title></title>");
+    QString data("<content></content>");
     reader.addData(data);
     moveToStartElement();
     Element *element = handler.parse(reader);
-    QCOMPARE(element->type(), Element::TitleType);
-    TitleElement *title = dynamic_cast<TitleElement*>(element);
-    QVERIFY(title != 0);
+    QCOMPARE(element->type(), Element::ContentType);
+    ContentElement *content = dynamic_cast<ContentElement*>(element);
+    QVERIFY(content != 0);
     delete element;
 }
 
-void TitleHandler_Test::defaultValueIsEmpty()
+void ContentHandler_Test::defaultValueIsEmptyAndContentTypeIsText()
 {
-    QString data("<title></title>");
+    QString data("<content></content>");
     reader.addData(data);
     moveToStartElement();
     Element *element = handler.parse(reader);
-    TitleElement *title = dynamic_cast<TitleElement*>(element);
-    QVERIFY(title->value().isEmpty());
+    ContentElement *content = dynamic_cast<ContentElement*>(element);
+    QVERIFY(content->value().isEmpty());
+    QCOMPARE(content->contentType(), QString("text"));
     delete element;
 }
 
-void TitleHandler_Test::valueIsCorrect()
+void ContentHandler_Test::valueAndContentTypeIsCorrect()
 {
     QString value("Hello world! Привет мир!");
-    QString data("<title>"+value+"</title>");
+    QString contentType("html");
+    QString data("<content type=\""+contentType+"\">"+value+"</content>");
     reader.addData(data);
     moveToStartElement();
     Element *element = handler.parse(reader);
-    TitleElement *title = dynamic_cast<TitleElement*>(element);
-    QCOMPARE(title->value(), value);
+    ContentElement *content = dynamic_cast<ContentElement*>(element);
+    QCOMPARE(content->value(), value);
+    QCOMPARE(content->contentType(), contentType);
     delete element;
 }
 
-void TitleHandler_Test::cleanup()
+void ContentHandler_Test::cleanup()
 {
     QVERIFY(!reader.hasError());
     reader.clear();
 }
 
-void TitleHandler_Test::moveToStartElement()
+void ContentHandler_Test::moveToStartElement()
 {
     while( !reader.isStartElement() || reader.hasError() || reader.atEnd() ) {
         reader.readNext();
     }
 }
 
-QTEST_MAIN(TitleHandler_Test)
-#include "TitleHandler_test.moc"
+QTEST_MAIN(ContentHandler_Test)
+#include "ContentHandler_test.moc"

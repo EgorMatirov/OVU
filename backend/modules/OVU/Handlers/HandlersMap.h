@@ -21,8 +21,7 @@
 #ifndef HANDLERS_MAP_H
 #define HANDLERS_MAP_H
 
-#include "EntryHandler.h"
-#include "TitleHandler.h"
+#include "Handler.h"
 
 #include <QMap>
 

@@ -21,6 +21,7 @@
 
 #include "Handlers/EntryHandler.h"
 #include "Handlers/HandlersMap.h"
+#include "Elements/EntryElement.h"
 
 #include <QDebug>
 
@@ -40,10 +41,9 @@ void Feed::setSource(const QString &source)
 {
     m_source = source;
     QXmlStreamReader reader(source);
-    QXmlStreamReader::TokenType currentToken;
     while( !reader.atEnd() && !reader.hasError() ) {
-        currentToken = reader.readNext();
-        if( currentToken == QXmlStreamReader::StartElement ) {
+        reader.readNext();
+        if( reader.isStartElement() ) {
             QString tokenName = reader.name().toString();
             Handler *handler = HandlersMap::handler(tokenName);
 
@@ -51,7 +51,19 @@ void Feed::setSource(const QString &source)
               * If error will happen while parsing in handler, reader will
               * know about it and we handle it later.
               */
-            handler->parse(reader);
+            Element *element = handler->parse(reader);
+            if( element->type() == Element::TitleType ) {
+                TitleElement *title = static_cast<TitleElement*>(element);
+                qDebug() << "Title:" << title->value();
+            }
+            else if( element->type() == Element::EntryType ) {
+                EntryElement *entry = static_cast<EntryElement*>(element);
+                qDebug() << "Entry start.";
+                qDebug() << "Title:" << entry->title()->value();
+                qDebug() << "Content type:" << entry->content()->contentType();
+                qDebug() << "Content:" << entry->content()->value();
+                qDebug() << "Entry End";
+            }
         }
     }
     if ( reader.hasError() ) {

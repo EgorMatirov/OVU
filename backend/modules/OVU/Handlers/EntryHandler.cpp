@@ -29,19 +29,21 @@ EntryHandler::EntryHandler()
 
 Element *EntryHandler::parse(QXmlStreamReader &reader) const
 {
-    Q_ASSERT(reader.tokenType() == QXmlStreamReader::StartElement);
+    Q_ASSERT(reader.isStartElement());
     EntryElement *entry = new EntryElement;
-    QXmlStreamReader::TokenType currentToken = reader.readNext();
-    while( !isEndOfElement(reader) && !reader.hasError() ) {
-        if( currentToken == QXmlStreamReader::StartElement ) {
+    reader.readNext();
+    while( !isEndElement(reader,QString("entry")) && !reader.hasError() ) {
+        if( reader.isStartElement() ) {
             QString tokenName = reader.name().toString();
             Handler *handler = HandlersMap::handler(tokenName);
             Element *element = handler->parse(reader);
             if( element->type() == Element::TitleType ) {
-                entry->setTitle(dynamic_cast<TitleElement*>(element));
+                entry->setTitle(static_cast<TitleElement*>(element));
+            } else if ( element->type() == Element::ContentType ) {
+                entry->setContent(static_cast<ContentElement*>(element));
             }
         }
-        currentToken = reader.readNext();
+        reader.readNext();
       }
     return entry;
 }

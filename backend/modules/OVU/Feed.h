@@ -29,9 +29,9 @@
 class Feed : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY( QString source READ source WRITE setSource NOTIFY sourceChanged )
 
-    Q_PROPERTY( FeedModel *model READ model NOTIFY modelChanged )
+    Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
+    Q_PROPERTY(FeedModel *model READ model NOTIFY modelChanged)
 
 public:
     explicit Feed(QObject *parent = 0);

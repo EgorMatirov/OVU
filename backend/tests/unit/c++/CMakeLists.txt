@@ -8,3 +8,4 @@ include_directories(
 
 add_test_OVU(TitleHandler_test)
 add_test_OVU(EntryHandler_test)
+add_test_OVU(ContentHandler_test)

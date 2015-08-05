@@ -32,7 +32,8 @@ public:
     enum ElementType {
         UnsupportedType,
         TitleType,
-        EntryType
+        EntryType,
+        ContentType
     };
 
 public:

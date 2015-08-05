@@ -23,20 +23,19 @@
 #include "Handlers/EntryHandler.h"
 #include "Elements/EntryElement.h"
 
-#include <QDebug>
-
 class EntryHandler_Test : public QObject {
     Q_OBJECT
 private slots:
     void elementIsEntry();
     void defaultTitleIsEmpty();
     void titleIsCorrect();
+    void defaultContentIsEmptyAndContentTypeIsText();
+    void contentIsCorrect();
     void cleanup();
 private:
     EntryHandler handler;
     QXmlStreamReader reader;
     void moveToStartElement();
-    bool isStartElement();
 };
 
 
@@ -50,6 +49,7 @@ void EntryHandler_Test::elementIsEntry()
     QCOMPARE(element->type(), Element::EntryType);
     EntryElement *entry = dynamic_cast<EntryElement*>(element);
     QVERIFY(entry != 0);
+    delete element;
 }
 
 void EntryHandler_Test::defaultTitleIsEmpty()
@@ -57,9 +57,11 @@ void EntryHandler_Test::defaultTitleIsEmpty()
     QString data("<entry></entry>");
     reader.addData(data);
     moveToStartElement();
-    EntryElement *entry = dynamic_cast<EntryElement*>(handler.parse(reader));
+    Element *element = handler.parse(reader);
+    EntryElement *entry = dynamic_cast<EntryElement*>(element);
     TitleElement *title = entry->title();
     QVERIFY(title->value().isEmpty());
+    delete element;
 }
 
 void EntryHandler_Test::titleIsCorrect()
@@ -68,9 +70,39 @@ void EntryHandler_Test::titleIsCorrect()
     QString data("<entry><title>"+value+"</title></entry>");
     reader.addData(data);
     moveToStartElement();
-    EntryElement *entry = dynamic_cast<EntryElement*>(handler.parse(reader));
+    Element *element = handler.parse(reader);
+    EntryElement *entry = dynamic_cast<EntryElement*>(element);
     TitleElement *title = entry->title();
     QCOMPARE(title->value(), value);
+    delete element;
+}
+
+void EntryHandler_Test::defaultContentIsEmptyAndContentTypeIsText()
+{
+    QString data("<entry></entry>");
+    reader.addData(data);
+    moveToStartElement();
+    Element *element = handler.parse(reader);
+    EntryElement *entry = dynamic_cast<EntryElement*>(element);
+    ContentElement *content = entry->content();
+    QVERIFY(content->value().isEmpty());
+    QCOMPARE(content->contentType(), QString("text"));
+    delete element;
+}
+
+void EntryHandler_Test::contentIsCorrect()
+{
+    QString value("Hello world! Привет мир!");
+    QString contentType("html");
+    QString data("<entry><content type=\""+contentType+"\">"+value+"</content></entry>");
+    reader.addData(data);
+    moveToStartElement();
+    Element *element = handler.parse(reader);
+    EntryElement *entry = dynamic_cast<EntryElement*>(element);
+    ContentElement *content = entry->content();
+    QCOMPARE(content->value(), value);
+    QCOMPARE(content->contentType(), contentType);
+    delete element;
 }
 
 void EntryHandler_Test::cleanup()
@@ -81,14 +113,9 @@ void EntryHandler_Test::cleanup()
 
 void EntryHandler_Test::moveToStartElement()
 {
-    while( !isStartElement() || reader.hasError() || reader.atEnd() ) {
+    while( !reader.isStartElement() || reader.hasError() || reader.atEnd() ) {
         reader.readNext();
     }
-}
-
-bool EntryHandler_Test::isStartElement()
-{
-    return reader.tokenType() == QXmlStreamReader::StartElement;
 }
 
 QTEST_MAIN(EntryHandler_Test)

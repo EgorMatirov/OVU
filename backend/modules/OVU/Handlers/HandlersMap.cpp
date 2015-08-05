@@ -20,6 +20,10 @@
 
 #include "HandlersMap.h"
 
+#include "EntryHandler.h"
+#include "TitleHandler.h"
+#include "ContentHandler.h"
+
 QMap<QString,Handler*> HandlersMap::handlers = QMap<QString,Handler*>();
 bool HandlersMap::initialized = false;
 
@@ -38,5 +42,6 @@ void HandlersMap::initialize()
 {
     handlers["entry"] = new EntryHandler();
     handlers["title"] = new TitleHandler();
+    handlers["content"] = new ContentHandler();
     initialized = true;
 }
