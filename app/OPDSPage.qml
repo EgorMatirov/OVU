@@ -20,33 +20,40 @@
 
 import QtQuick 2.0
 import Ubuntu.Components 1.2
+import OVU 1.0
 
-MainView {
-    // objectName for functional testing purposes (autopilot-qt5)
-    objectName: "mainView"
+Page {
+    id: root
+    title: view.title
 
-    // Note!
-    // applicationName needs to match the "name" field of the click manifest
-    applicationName: "ovu.egormatirov"
+    property alias source: view.source
 
-    /*
-     This property enables the application to change orientation
-     when the device is rotated. The default is false.
-    */
-    //automaticOrientation: true
+    function setError(error) {
+        title = error;
+        errorLabel.text = error;
+        errorContainer.visible = true;
+    }
 
-    width: units.gu(100)
-    height: units.gu(76)
+    signal newPageRequested(url source)
 
-    PageStack{
-        id: pageStack
+    Flickable{
         anchors.fill: parent
-        Component.onCompleted: appendOPDSPage("")
-        function appendOPDSPage(source) {
-            var properties = {source:source};
-            var page = push(Qt.resolvedUrl("OPDSPage.qml"), properties);
-            page.newPageRequested.connect(appendOPDSPage);
+
+        OPDSView {
+            id: view
+            anchors.fill: parent
+            onErrorHappened: setError(error)
+            onNewPageRequested: root.newPageRequested(source)
+        }
+
+        Item {
+            id: errorContainer
+            anchors.fill: parent
+            visible: false
+            Label {
+                id: errorLabel
+                anchors.centerIn: parent
+            }
         }
     }
 }
-

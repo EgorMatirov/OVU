@@ -21,9 +21,20 @@
 #include "FeedModel.h"
 
 
+FeedModel::FeedModel()
+{
+}
+
+FeedModel::~FeedModel()
+{
+    qDeleteAll(m_entries);
+}
+
 int FeedModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
+    if( !parent.isValid() ) {
+        return m_entries.size();
+    }
     return 0;
 }
 
@@ -31,5 +42,53 @@ QVariant FeedModel::data(const QModelIndex &index, int role) const
 {
     Q_UNUSED(index)
     Q_UNUSED(role)
+    if( index.isValid() ) {
+        if( role == Qt::DisplayRole ) {
+            return m_entries.at(index.row())->content()->value();
+        }
+        if( role == Qt::UserRole ) {
+            return m_entries.at(index.row())->title()->value();
+        }
+    }
     return QVariant();
+}
+
+QModelIndex FeedModel::index(int row, int column,
+                             const QModelIndex &parent) const
+{
+    if( parent.isValid() ) {
+        return QModelIndex();
+    }
+
+    if( column != 0 ) {
+        return QModelIndex();
+    }
+
+    if( row < 0 || row >= m_entries.size() ) {
+        return QModelIndex();
+    }
+    EntryElement *entry = m_entries[row-1];
+    return createIndex(row, column, entry);
+}
+
+Qt::ItemFlags FeedModel::flags(const QModelIndex &index) const
+{
+    Q_UNUSED(index)
+    return Qt::ItemIsSelectable & Qt::ItemIsEnabled & Qt::ItemNeverHasChildren;
+}
+
+QHash<int, QByteArray> FeedModel::roleNames() const
+{
+    QHash<int, QByteArray> hash;
+    hash[Qt::DisplayRole] = "content";
+    hash[Qt::UserRole] = "title";
+    return hash;
+}
+
+void FeedModel::appendEntry(EntryElement *entry)
+{
+    QModelIndex root;
+    beginInsertRows(root, rowCount(root),rowCount(root));
+    m_entries.append(entry);
+    endInsertRows();
 }

@@ -18,24 +18,10 @@
   *
   **/
 
-#include "backend.h"
+import QtQuick 2.0
 
-#include "Feed.h"
-
-#include <QtQml/QtQml>
-#include <QtQml/QQmlContext>
-
-
-void BackendPlugin::registerTypes(const char *uri)
-{
-    Q_ASSERT(uri == QLatin1String("OVU"));
-
-    qmlRegisterType<Feed>(uri, 1, 0, "Feed");
-    qmlRegisterType<FeedModel>(uri, 1, 0, "FeedModel");
+Image {
+    width: units.gu(6)
+    height: units.gu(6)
+    fillMode: Image.PreserveAspectFit
 }
-
-void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    QQmlExtensionPlugin::initializeEngine(engine, uri);
-}
-

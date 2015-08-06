@@ -39,6 +39,9 @@ Feed::~Feed() {
 
 void Feed::setSource(const QString &source)
 {
+    if(source.isEmpty()) {
+        return;
+    }
     m_source = source;
     QXmlStreamReader reader(source);
     while( !reader.atEnd() && !reader.hasError() ) {
@@ -55,6 +58,7 @@ void Feed::setSource(const QString &source)
             if( element->type() == Element::TitleType ) {
                 TitleElement *title = static_cast<TitleElement*>(element);
                 qDebug() << "Title:" << title->value();
+                setTitle(title->value());
             }
             else if( element->type() == Element::EntryType ) {
                 EntryElement *entry = static_cast<EntryElement*>(element);
@@ -63,12 +67,15 @@ void Feed::setSource(const QString &source)
                 qDebug() << "Content type:" << entry->content()->contentType();
                 qDebug() << "Content:" << entry->content()->value();
                 qDebug() << "Entry End";
+                m_model->appendEntry(entry);
             }
         }
     }
     if ( reader.hasError() ) {
         printError(reader);
+        emit errorHappened();
     }
+    emit parsingFinished();
 }
 
 FeedModel *Feed::model()
@@ -84,4 +91,15 @@ void Feed::printError(const QXmlStreamReader &reader) const
     QStringList lines = m_source.split('\n');
     qDebug() << "Text:" << lines[reader.lineNumber() - 1];
 }
+QString Feed::title() const
+{
+    return m_title;
+}
+
+void Feed::setTitle(const QString &title)
+{
+    m_title = title;
+    emit titleChanged();
+}
+
 

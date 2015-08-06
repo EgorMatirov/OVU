@@ -21,14 +21,32 @@
 #ifndef FEED_MODEL_H
 #define FEED_MODEL_H
 
+#include "Elements/EntryElement.h"
+
 #include <QAbstractListModel>
 
 class FeedModel : public QAbstractListModel {
 
-public:
-    int rowCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
+    Q_OBJECT
 
+public:
+    explicit FeedModel();
+    ~FeedModel();
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index,
+                  int role = Qt::DisplayRole) const override;
+    QModelIndex index(int row, int column,
+                      const QModelIndex &parent = QModelIndex()) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QHash<int,QByteArray> roleNames() const override;
+
+public:
+    // Our own functions.
+    void appendEntry(EntryElement *entry);
+
+private:
+    QList<EntryElement*> m_entries;
 };
 
 #endif // FEED_MODEL_H
