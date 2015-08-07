@@ -29,13 +29,13 @@ Item {
         anchors.fill: parent
         width: parent.width
         Item{
-            width: cover.width
+            width: thumbnailImage.width
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             visible: true
-            Cover {
-                id: cover
-                visible: false
+            Thumbnail {
+                id: thumbnailImage
+                source: thumbnail === "" ? "test.jpg" : thumbnail
                 anchors.verticalCenter: parent.verticalCenter
             }
         }

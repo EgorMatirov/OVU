@@ -25,8 +25,10 @@
 
 #include "TitleElement.h"
 #include "ContentElement.h"
+#include "ThumbnailElement.h"
 
 #include <QString>
+#include <QUrl>
 
 class EntryElement : public Element
 {
@@ -45,9 +47,17 @@ public:
     ContentElement *content() const;
     void setContent(ContentElement *content);
 
+    ThumbnailElement *thumbnail() const;
+    void setThumbnail(ThumbnailElement *thumbnail);
+
+    QUrl baseUrl() const;
+    void setBaseUrl(const QUrl &baseUrl);
+
 private:
     TitleElement *m_title;
     ContentElement *m_content;
+    ThumbnailElement *m_thumbnail;
+    QUrl m_baseUrl;
 };
 
 #endif // ENTRY_ELEMENT_H

@@ -41,6 +41,8 @@ Element *EntryHandler::parse(QXmlStreamReader &reader) const
                 entry->setTitle(static_cast<TitleElement*>(element));
             } else if ( element->type() == Element::ContentType ) {
                 entry->setContent(static_cast<ContentElement*>(element));
+            } else if ( element->type() == Element::ThumbnailType ) {
+                entry->setThumbnail(static_cast<ThumbnailElement*>(element));
             }
         }
         reader.readNext();

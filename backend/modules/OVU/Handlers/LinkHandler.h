@@ -18,28 +18,19 @@
   *
   **/
 
-#ifndef ELEMENT_H
-#define ELEMENT_H
+#ifndef LINK_HANDLER_H
+#define LINK_HANDLER_H
 
-#include <QObject>
+#include "Handler.h"
 
-class Element : public QObject
-{
-
-    Q_OBJECT
+class LinkHandler : public Handler {
 
 public:
-    enum ElementType {
-        UnsupportedType,
-        TitleType,
-        EntryType,
-        ContentType,
-        ThumbnailType
-    };
+    explicit LinkHandler();
+    Element *parse(QXmlStreamReader &reader) const;
 
-public:
-    explicit Element();
-    virtual Element::ElementType type() const;
+private:
+    bool isThumbnailRel( const QString &rel) const;
 };
 
-#endif // ELEMENT_H
+#endif // LINK_HANDLER_H

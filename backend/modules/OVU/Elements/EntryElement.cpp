@@ -22,7 +22,8 @@
 
 EntryElement::EntryElement() :
     m_title(new TitleElement),
-    m_content(new ContentElement)
+    m_content(new ContentElement),
+    m_thumbnail(new ThumbnailElement)
 {
 }
 
@@ -30,6 +31,7 @@ EntryElement::~EntryElement()
 {
     delete m_title;
     delete m_content;
+    delete m_thumbnail;
 }
 
 Element::ElementType EntryElement::type() const
@@ -59,5 +61,28 @@ void EntryElement::setContent(ContentElement *content)
     auto tmp = m_content;
     m_content = content;
     delete tmp;
+}
+ThumbnailElement *EntryElement::thumbnail() const
+{
+    return m_thumbnail;
+}
+
+void EntryElement::setThumbnail(ThumbnailElement *thumbnail)
+{
+    auto tmp = m_thumbnail;
+    m_thumbnail = thumbnail;
+    delete tmp;
+}
+QUrl EntryElement::baseUrl() const
+{
+    return m_baseUrl;
+}
+
+void EntryElement::setBaseUrl(const QUrl &baseUrl)
+{
+    if( m_baseUrl != baseUrl ) {
+        m_baseUrl = baseUrl;
+        m_thumbnail->setBaseUrl(baseUrl);
+    }
 }
 

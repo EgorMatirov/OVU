@@ -33,6 +33,11 @@ public:
     explicit FeedModel();
     ~FeedModel();
 
+    enum Roles{
+        TitleRole = Qt::UserRole,
+        ThumbnailRole
+    };
+
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index,
                   int role = Qt::DisplayRole) const override;

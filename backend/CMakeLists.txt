@@ -14,11 +14,13 @@ set(
     modules/OVU/Elements/EntryElement.cpp
     modules/OVU/Elements/TitleElement.cpp
     modules/OVU/Elements/ContentElement.cpp
+    modules/OVU/Elements/ThumbnailElement.cpp
     modules/OVU/Handlers/Handler.cpp
     modules/OVU/Handlers/HandlersMap.cpp
     modules/OVU/Handlers/EntryHandler.cpp
     modules/OVU/Handlers/TitleHandler.cpp
     modules/OVU/Handlers/ContentHandler.cpp
+    modules/OVU/Handlers/LinkHandler.cpp
 )
 
 add_library(OVUbackend MODULE

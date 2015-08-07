@@ -43,11 +43,16 @@ QVariant FeedModel::data(const QModelIndex &index, int role) const
     Q_UNUSED(index)
     Q_UNUSED(role)
     if( index.isValid() ) {
-        if( role == Qt::DisplayRole ) {
+        switch(role) {
+        case Qt::DisplayRole:
             return m_entries.at(index.row())->content()->value();
-        }
-        if( role == Qt::UserRole ) {
+            break;
+        case TitleRole:
             return m_entries.at(index.row())->title()->value();
+            break;
+        case ThumbnailRole:
+            return m_entries.at(index.row())->thumbnail()->url();
+            break;
         }
     }
     return QVariant();
@@ -67,7 +72,7 @@ QModelIndex FeedModel::index(int row, int column,
     if( row < 0 || row >= m_entries.size() ) {
         return QModelIndex();
     }
-    EntryElement *entry = m_entries[row-1];
+    EntryElement *entry = m_entries[row];
     return createIndex(row, column, entry);
 }
 
@@ -81,7 +86,8 @@ QHash<int, QByteArray> FeedModel::roleNames() const
 {
     QHash<int, QByteArray> hash;
     hash[Qt::DisplayRole] = "content";
-    hash[Qt::UserRole] = "title";
+    hash[TitleRole] = "title";
+    hash[ThumbnailRole] = "thumbnail";
     return hash;
 }
 

@@ -66,8 +66,11 @@ void Feed::setSource(const QString &source)
                 qDebug() << "Title:" << entry->title()->value();
                 qDebug() << "Content type:" << entry->content()->contentType();
                 qDebug() << "Content:" << entry->content()->value();
+                qDebug() << "Thumbnail: " << entry->thumbnail()->url();
                 qDebug() << "Entry End";
                 m_model->appendEntry(entry);
+            } else {
+                delete element; // we are not using it anyway.
             }
         }
     }

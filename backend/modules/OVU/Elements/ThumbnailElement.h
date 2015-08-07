@@ -18,28 +18,32 @@
   *
   **/
 
-#ifndef ELEMENT_H
-#define ELEMENT_H
+#ifndef THUMBNAIL_ELEMENT_H
+#define THUMBNAIL_ELEMENT_H
 
-#include <QObject>
+#include "Element.h"
 
-class Element : public QObject
+#include <QUrl>
+
+class ThumbnailElement : public Element
 {
 
     Q_OBJECT
 
 public:
-    enum ElementType {
-        UnsupportedType,
-        TitleType,
-        EntryType,
-        ContentType,
-        ThumbnailType
-    };
+    explicit ThumbnailElement(const QString &url = "");
 
-public:
-    explicit Element();
-    virtual Element::ElementType type() const;
+    Element::ElementType type() const override;
+
+    QString url() const;
+    void setUrl(const QString &url);
+
+    QUrl baseUrl() const;
+    void setBaseUrl(const QUrl &baseUrl);
+
+private:
+    QString m_url;
+    QUrl m_baseUrl;
 };
 
-#endif // ELEMENT_H
+#endif // THUMBNAIL_ELEMENT_H
