@@ -18,42 +18,30 @@
   *
   **/
 
-import QtQuick 2.0
-import Ubuntu.Components 1.2
-import OVU 1.0
+#include "AuthorHandler.h"
 
-Page {
-    id: root
-    title: view.title
+#include "HandlersMap.h"
+#include "Elements/AuthorElement.h"
 
-    property alias source: view.source
+AuthorHandler::AuthorHandler()
+{
+}
 
-    function setError(error) {
-        title = error;
-        errorLabel.text = error;
-        errorContainer.visible = true;
-    }
-
-    signal newPageRequested(url source)
-
-    Flickable{
-        anchors.fill: parent
-
-        OPDSView {
-            id: view
-            anchors.fill: parent
-            onErrorHappened: setError(error)
-            onNewPageRequested: root.newPageRequested(source)
-        }
-
-        Item {
-            id: errorContainer
-            anchors.fill: parent
-            visible: false
-            Label {
-                id: errorLabel
-                anchors.centerIn: parent
+Element *AuthorHandler::parse(QXmlStreamReader &reader) const
+{
+    Q_ASSERT(reader.isStartElement());
+    AuthorElement *author = new AuthorElement;
+    reader.readNext();
+    while( !isEndElement(reader,QString("author")) && !reader.hasError() ) {
+        if( reader.isStartElement() ) {
+            QString tokenName = reader.name().toString();
+            Handler *handler = HandlersMap::handler(tokenName);
+            Element *element = handler->parse(reader);
+            if( element->type() == Element::NameType ) {
+                author->setName(static_cast<NameElement*>(element));
             }
         }
-    }
+        reader.readNext();
+      }
+    return author;
 }

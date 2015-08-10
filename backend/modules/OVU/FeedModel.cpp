@@ -43,15 +43,33 @@ QVariant FeedModel::data(const QModelIndex &index, int role) const
     Q_UNUSED(index)
     Q_UNUSED(role)
     if( index.isValid() ) {
+        EntryElement *entry = m_entries.at(index.row());
         switch(role) {
         case Qt::DisplayRole:
-            return m_entries.at(index.row())->content()->value();
+            return entry->content()->value();
             break;
         case TitleRole:
-            return m_entries.at(index.row())->title()->value();
+            return entry->title()->value();
             break;
         case ThumbnailRole:
-            return m_entries.at(index.row())->thumbnail()->url();
+            return entry->thumbnail()->url();
+            break;
+        case NavigationLinkRole:
+            return entry->navigationFeed()->url();
+            break;
+        case IsAcquisitionRole:
+            return !entry->acquisitions().isEmpty();
+            break;
+        case AuthorsRole: {
+            QStringList authors;
+            foreach (AuthorElement *author, entry->authors()) {
+                authors.append(author->name()->value());
+            }
+            return authors;
+            break;
+        }
+        case IsNextLinkRole:
+            return entry->isNextEntry();
             break;
         }
     }
@@ -79,7 +97,7 @@ QModelIndex FeedModel::index(int row, int column,
 Qt::ItemFlags FeedModel::flags(const QModelIndex &index) const
 {
     Q_UNUSED(index)
-    return Qt::ItemIsSelectable & Qt::ItemIsEnabled & Qt::ItemNeverHasChildren;
+    return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemNeverHasChildren;
 }
 
 QHash<int, QByteArray> FeedModel::roleNames() const
@@ -88,7 +106,24 @@ QHash<int, QByteArray> FeedModel::roleNames() const
     hash[Qt::DisplayRole] = "content";
     hash[TitleRole] = "title";
     hash[ThumbnailRole] = "thumbnail";
+    hash[NavigationLinkRole] = "navigationLink";
+    hash[IsAcquisitionRole] = "isAcquisition";
+    hash[AuthorsRole] = "authors";
+    hash[IsNextLinkRole] = "isNextLink";
     return hash;
+}
+
+bool FeedModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    if( 0 <= row  && row+count-1 < m_entries.size() && !parent.isValid() ) {
+        beginRemoveRows(parent, row, row+count-1);
+        for(int i = 0; i<count; ++i) {
+            m_entries.removeAt(row);
+        }
+        endRemoveRows();
+        return true;
+    }
+    return false;
 }
 
 void FeedModel::appendEntry(EntryElement *entry)

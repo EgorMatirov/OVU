@@ -26,25 +26,22 @@ Item {
     id: root
     signal errorHappened(string error)
     signal newPageRequested(url source)
+    signal replacingPageRequested(url source)
+    signal parsingFinished()
     property alias title: feed.title
-    property url source: ""
+    property url sourceUrl: ""
+    property bool busy: false
+    onSourceUrlChanged: feed.get(root.sourceUrl)
+    Component.onCompleted: feed.get(root.sourceUrl)
+
     Feed {
         id: feed
-        onErrorHappened: root.errorHappened(i18n.tr("Sorry, parsing failed"));
-    }
-    
-    Network {
-        id: network
-        Component.onCompleted: network.get(root.source);
-        onSourceRecieved: feed.sourceText = sourceText;
+        onParsingFinished: root.parsingFinished()
         onAuthRequired: {
             var message = i18n.tr("Sorry, authorization isn't supported yet.");
             root.errorHappened(message);
         }
-        onErrorHappened: {
-            var message = i18n.tr("Error: %1 %2").arg(code).arg(message);
-            root.errorHappened(message);
-        }
+        onErrorHappened: root.errorHappened(message);
     }
     
     ListView {
@@ -54,7 +51,7 @@ Item {
         
         delegate: ListItem {
             id: delegate
-            height: bookDelegate.height + units.gu(2)
+            height: entryLoader.height + units.gu(2)
             contentItem.anchors {
                 leftMargin: units.gu(2)
                 rightMargin: units.gu(2)
@@ -63,12 +60,25 @@ Item {
             }
             action: Action {
                 onTriggered: {
-                    var url = "";
-                    root.newPageRequested(url);
+                    if( !isAcquisition ) {
+                        if( isNextLink ) {
+                            console.log("Next page requested!");
+                            root.replacingPageRequested(navigationLink);
+                        } else {
+                            root.newPageRequested(navigationLink);
+                        }
+                    }
                 }
             }
-            BookDelegate {
-                id: bookDelegate
+            Loader {
+                id: entryLoader
+                source: isAcquisition ?
+                            Qt.resolvedUrl("BookEntry.qml")
+                          : isNextLink ?
+                                Qt.resolvedUrl("NextLinkEntry.qml")
+                              : Qt.resolvedUrl("NavigationEntry.qml")
+                anchors.left: parent.left
+                anchors.right: parent.right
                 width: parent.width
             }
         }

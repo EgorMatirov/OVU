@@ -18,20 +18,50 @@
   *
   **/
 
-#ifndef THUMBNAIL_ELEMENT_H
-#define THUMBNAIL_ELEMENT_H
-
 #include "LinkElement.h"
 
-class ThumbnailElement : public LinkElement
+LinkElement::LinkElement(const QString &url) :
+    m_url(url)
 {
+}
 
-    Q_OBJECT
+Element::ElementType LinkElement::type() const
+{
+    // Right now LinkElement is just a base type for Thumbnails,etc.
+    // So it doesn't have any own type yet.
+    return Element::UnsupportedType;
+}
 
-public:
-    explicit ThumbnailElement(const QString &url = "");
+QUrl LinkElement::url() const
+{
+    if( m_url.isEmpty() ) {
+        return QString();
+    }
+    if( m_url.isRelative() ) {
+        QUrl url(m_baseUrl);
+        url.setPath(m_url.path());
+        return url.toString();
+    } else {
+        return m_url;
+    }
+}
 
-    Element::ElementType type() const override;
-};
+void LinkElement::setUrl(const QString &url)
+{
+    m_url = QUrl(url);
+}
 
-#endif // THUMBNAIL_ELEMENT_H
+void LinkElement::setUrl(const QUrl &url)
+{
+    m_url = url;
+}
+
+QUrl LinkElement::baseUrl() const
+{
+    return m_baseUrl;
+}
+
+void LinkElement::setBaseUrl(const QUrl &baseUrl)
+{
+    m_baseUrl = baseUrl;
+}

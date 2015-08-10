@@ -18,35 +18,14 @@
   *
   **/
 
-#include "ContentElement.h"
+#include "AcquisitionElement.h"
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
+AcquisitionElement::AcquisitionElement(const QString &url) :
+    LinkElement(url)
 {
 }
 
-Element::ElementType ContentElement::type() const
+Element::ElementType AcquisitionElement::type() const
 {
-    return ElementType::ContentType;
-}
-
-QString ContentElement::value() const
-{
-    return m_value;
-}
-
-void ContentElement::setValue(const QString &value)
-{
-    m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
-}
-
-void ContentElement::setContentType(const QString &contentType)
-{
-    m_contentType = contentType;
+    return Element::AcquisitionType;
 }

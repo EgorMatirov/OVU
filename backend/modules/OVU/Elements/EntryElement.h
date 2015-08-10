@@ -26,9 +26,13 @@
 #include "TitleElement.h"
 #include "ContentElement.h"
 #include "ThumbnailElement.h"
+#include "AcquisitionElement.h"
+#include "NavigationFeedElement.h"
+#include "AuthorElement.h"
 
 #include <QString>
 #include <QUrl>
+#include <QList>
 
 class EntryElement : public Element
 {
@@ -53,11 +57,30 @@ public:
     QUrl baseUrl() const;
     void setBaseUrl(const QUrl &baseUrl);
 
+    QList<AcquisitionElement *> acquisitions() const;
+    void setAcquisitions(const QList<AcquisitionElement *> &acquisitions);
+
+    void appendAcquisition(AcquisitionElement *acquisition);
+
+    NavigationFeedElement *navigationFeed() const;
+    void setNavigationFeed(NavigationFeedElement *navigationFeed);
+
+    QList<AuthorElement *> authors() const;
+    void setAuthors(const QList<AuthorElement *> &authors);
+    void appendAuthor(AuthorElement *author);
+
+    bool isNextEntry() const;
+    void setIsNextEntry(bool isNextEntry);
+
 private:
     TitleElement *m_title;
     ContentElement *m_content;
     ThumbnailElement *m_thumbnail;
+    NavigationFeedElement *m_navigationFeed;
     QUrl m_baseUrl;
+    QList<AcquisitionElement*> m_acquisitions;
+    QList<AuthorElement*> m_authors;
+    bool m_isNextEntry;
 };
 
 #endif // ENTRY_ELEMENT_H

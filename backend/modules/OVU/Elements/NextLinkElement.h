@@ -18,35 +18,20 @@
   *
   **/
 
-#include "ContentElement.h"
+#ifndef NEXT_LINK_ELEMENT_H
+#define NEXT_LINK_ELEMENT_H
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
-{
-}
+#include "LinkElement.h"
 
-Element::ElementType ContentElement::type() const
+class NextLinkElement : public LinkElement
 {
-    return ElementType::ContentType;
-}
 
-QString ContentElement::value() const
-{
-    return m_value;
-}
+    Q_OBJECT
 
-void ContentElement::setValue(const QString &value)
-{
-    m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
-}
+public:
+    explicit NextLinkElement(const QString &url = "");
 
-void ContentElement::setContentType(const QString &contentType)
-{
-    m_contentType = contentType;
-}
+    Element::ElementType type() const override;
+};
+
+#endif // NEXT_LINK_ELEMENT_H

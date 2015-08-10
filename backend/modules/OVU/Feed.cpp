@@ -22,28 +22,37 @@
 #include "Handlers/EntryHandler.h"
 #include "Handlers/HandlersMap.h"
 #include "Elements/EntryElement.h"
+#include "Elements/NextLinkElement.h"
 
 #include <QDebug>
+#include <QElapsedTimer>
+#include <QNetworkRequest>
 
 Feed::Feed(QObject *parent) :
     QObject(parent),
     m_source(""),
-    m_model(new FeedModel)
+    m_model(new FeedModel),
+    m_networkManager(new QNetworkAccessManager)
 {
-
+    connect(m_networkManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(parse(QNetworkReply*)));
 }
 
 Feed::~Feed() {
     delete m_model;
+    delete m_networkManager;
 }
 
-void Feed::setSource(const QString &source)
+void Feed::setSource(const QString &source, const QUrl &url)
 {
     if(source.isEmpty()) {
         return;
     }
+    QElapsedTimer timer;
+    timer.start();
     m_source = source;
     QXmlStreamReader reader(source);
+    EntryElement *nextLinkEntry = nullptr;
     while( !reader.atEnd() && !reader.hasError() ) {
         reader.readNext();
         if( reader.isStartElement() ) {
@@ -57,18 +66,22 @@ void Feed::setSource(const QString &source)
             Element *element = handler->parse(reader);
             if( element->type() == Element::TitleType ) {
                 TitleElement *title = static_cast<TitleElement*>(element);
-                qDebug() << "Title:" << title->value();
                 setTitle(title->value());
             }
             else if( element->type() == Element::EntryType ) {
                 EntryElement *entry = static_cast<EntryElement*>(element);
-                qDebug() << "Entry start.";
-                qDebug() << "Title:" << entry->title()->value();
-                qDebug() << "Content type:" << entry->content()->contentType();
-                qDebug() << "Content:" << entry->content()->value();
-                qDebug() << "Thumbnail: " << entry->thumbnail()->url();
-                qDebug() << "Entry End";
+                entry->setBaseUrl(url);
                 m_model->appendEntry(entry);
+            } else if( element->type() == Element::NextLinkType ) {
+                NextLinkElement *nextLink =
+                        static_cast<NextLinkElement*>(element);
+                nextLinkEntry = new EntryElement();
+                nextLinkEntry->setTitle(new TitleElement(tr("Next page")));
+                NavigationFeedElement *navigationFeed =
+                        new NavigationFeedElement(nextLink->url().toString());
+                nextLinkEntry->setNavigationFeed(navigationFeed);
+                nextLinkEntry->setIsNextEntry(true);
+                nextLinkEntry->setBaseUrl(url);
             } else {
                 delete element; // we are not using it anyway.
             }
@@ -76,8 +89,12 @@ void Feed::setSource(const QString &source)
     }
     if ( reader.hasError() ) {
         printError(reader);
-        emit errorHappened();
+        emit errorHappened(tr("Parsing failed."));
     }
+    if( nextLinkEntry != nullptr ) {
+        m_model->appendEntry(nextLinkEntry);
+    }
+    qDebug() << "Parsing finished." << timer.elapsed() << "milliseconds";
     emit parsingFinished();
 }
 
@@ -103,6 +120,32 @@ void Feed::setTitle(const QString &title)
 {
     m_title = title;
     emit titleChanged();
+}
+
+void Feed::get(const QUrl &url)
+{
+    if( url.isValid() ) {
+        QNetworkRequest request(url);
+        QString userAgent("OVU/0.0.0.1 (+https://github.com/EgorMatirov/OVU)");
+        request.setRawHeader("User-Agent", userAgent.toUtf8());
+        m_networkManager->get(request);
+    }
+}
+
+void Feed::parse(QNetworkReply *reply)
+{
+    if( reply->isFinished() && reply->isReadable() ) {
+        if( reply->error() != QNetworkReply::NoError ) {
+            if( reply->error() == QNetworkReply::AuthenticationRequiredError ) {
+                emit authRequired();
+            } else {
+                emit errorHappened(reply->errorString());
+            }
+        } else {
+            QString data = reply->readAll();
+            setSource(data, reply->url());
+        }
+    }
 }
 
 

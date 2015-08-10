@@ -23,7 +23,9 @@
 EntryElement::EntryElement() :
     m_title(new TitleElement),
     m_content(new ContentElement),
-    m_thumbnail(new ThumbnailElement)
+    m_thumbnail(new ThumbnailElement),
+    m_navigationFeed(new NavigationFeedElement),
+    m_isNextEntry(false)
 {
 }
 
@@ -32,6 +34,9 @@ EntryElement::~EntryElement()
     delete m_title;
     delete m_content;
     delete m_thumbnail;
+    delete m_navigationFeed;
+    qDeleteAll(m_acquisitions);
+    qDeleteAll(m_authors);
 }
 
 Element::ElementType EntryElement::type() const
@@ -83,6 +88,63 @@ void EntryElement::setBaseUrl(const QUrl &baseUrl)
     if( m_baseUrl != baseUrl ) {
         m_baseUrl = baseUrl;
         m_thumbnail->setBaseUrl(baseUrl);
+        foreach (AcquisitionElement* acquisition, m_acquisitions) {
+            acquisition->setBaseUrl(baseUrl);
+        }
+        m_navigationFeed->setBaseUrl(baseUrl);
     }
 }
+QList<AcquisitionElement *> EntryElement::acquisitions() const
+{
+    return m_acquisitions;
+}
+
+void EntryElement::setAcquisitions(const QList<AcquisitionElement *> &acquisitions)
+{
+    auto tmp = m_acquisitions;
+    m_acquisitions = acquisitions;
+    qDeleteAll(tmp);
+}
+
+void EntryElement::appendAcquisition(AcquisitionElement *acquisition)
+{
+    m_acquisitions.append(acquisition);
+}
+NavigationFeedElement *EntryElement::navigationFeed() const
+{
+    return m_navigationFeed;
+}
+
+void EntryElement::setNavigationFeed(NavigationFeedElement *navigationFeed)
+{
+    auto tmp = m_navigationFeed;
+    m_navigationFeed = navigationFeed;
+    delete tmp;
+}
+QList<AuthorElement *> EntryElement::authors() const
+{
+    return m_authors;
+}
+
+void EntryElement::setAuthors(const QList<AuthorElement *> &authors)
+{
+    auto tmp = m_authors;
+    m_authors = authors;
+    qDeleteAll(tmp);
+}
+
+void EntryElement::appendAuthor(AuthorElement *author)
+{
+    m_authors.append(author);
+}
+bool EntryElement::isNextEntry() const
+{
+    return m_isNextEntry;
+}
+
+void EntryElement::setIsNextEntry(bool isNextEntry)
+{
+    m_isNextEntry = isNextEntry;
+}
+
 

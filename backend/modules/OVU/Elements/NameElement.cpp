@@ -18,35 +18,24 @@
   *
   **/
 
-#include "ContentElement.h"
+#include "NameElement.h"
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
+NameElement::NameElement(const QString &value) :
+    m_value(value)
 {
 }
 
-Element::ElementType ContentElement::type() const
+Element::ElementType NameElement::type() const
 {
-    return ElementType::ContentType;
+    return ElementType::NameType;
 }
 
-QString ContentElement::value() const
+QString NameElement::value() const
 {
     return m_value;
 }
 
-void ContentElement::setValue(const QString &value)
+void NameElement::setValue(const QString &value)
 {
     m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
-}
-
-void ContentElement::setContentType(const QString &contentType)
-{
-    m_contentType = contentType;
 }

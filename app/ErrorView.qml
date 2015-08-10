@@ -18,35 +18,20 @@
   *
   **/
 
-#include "ContentElement.h"
+import QtQuick 2.0
+import Ubuntu.Components 1.2
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
-{
-}
+Item {
+    id: root
+    property alias message: label.text
 
-Element::ElementType ContentElement::type() const
-{
-    return ElementType::ContentType;
-}
-
-QString ContentElement::value() const
-{
-    return m_value;
-}
-
-void ContentElement::setValue(const QString &value)
-{
-    m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
-}
-
-void ContentElement::setContentType(const QString &contentType)
-{
-    m_contentType = contentType;
+    function show()
+    {
+        visible = true;
+    }
+    
+    Label {
+        id: label
+        anchors.centerIn: parent
+    }
 }

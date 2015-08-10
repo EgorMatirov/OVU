@@ -22,12 +22,16 @@
 
 #include "Handlers/LinkHandler.h"
 #include "Elements/ThumbnailElement.h"
+#include "Elements/AcquisitionElement.h"
+#include "Elements/NavigationFeedElement.h"
+#include "Elements/NextLinkElement.h"
 
 class LinkHandler_Test : public QObject {
     Q_OBJECT
 private slots:
-    void elementIsThumbnail();
-    void hrefIsCorrect();
+    void elementIsUnsupportedIfLinkWithoutRel();
+    void hrefAndTypeAreCorrect();
+    void hrefAndTypeAreCorrect_data();
     void cleanup();
 private:
     LinkHandler handler;
@@ -36,31 +40,93 @@ private:
     bool isStartElement();
 };
 
-
-
-void LinkHandler_Test::elementIsThumbnail()
+void LinkHandler_Test::elementIsUnsupportedIfLinkWithoutRel()
 {
-    QString data("<link href=\"a.c\" rel=\"http://opds-spec.org/thumbnail\"/>");
+    QString rel = "";
+    QString data = QString("<link href=\"test.epub\" rel=\"%1\"/>").arg(rel);
     reader.addData(data);
     moveToStartElement();
     Element *element = handler.parse(reader);
-    QCOMPARE(element->type(), Element::ThumbnailType);
-    ThumbnailElement *thumbnail = dynamic_cast<ThumbnailElement*>(element);
-    QVERIFY(thumbnail != 0);
+    QCOMPARE(element->type(), Element::UnsupportedType);
     delete element;
 }
 
-void LinkHandler_Test::hrefIsCorrect()
+void LinkHandler_Test::hrefAndTypeAreCorrect()
 {
-    QString rel("http://opds-spec.org/thumbnail");
-    QString href("test.jpg");
-    QString data = QString("<link href=\"%1\" rel=\"%2\"/>").arg(href).arg(rel);
+    QFETCH(QString, type);
+    QFETCH(QString, rel);
+    QFETCH(QString, href);
+    QFETCH(int, elementType);
+
+    QString data = QString("<link href=\"%1\" rel=\"%2\" type=\"%3\"/>")
+            .arg(href)
+            .arg(rel)
+            .arg(type);
+
     reader.addData(data);
     moveToStartElement();
     Element *element = handler.parse(reader);
-    ThumbnailElement *thumbnail = dynamic_cast<ThumbnailElement*>(element);
-    QCOMPARE(thumbnail->url(), href);
+    QCOMPARE(int(element->type()), elementType);
+
+    switch(elementType) {
+    case Element::ThumbnailType: {
+        ThumbnailElement *thumbnail = static_cast<ThumbnailElement*>(element);
+        QCOMPARE(thumbnail->url(), QUrl(href));
+        break;
+    }
+    case Element::AcquisitionType: {
+        AcquisitionElement *acq = static_cast<AcquisitionElement*>(element);
+        QCOMPARE(acq->url(), QUrl(href));
+        break;
+    }
+    case Element::NavigationFeedType: {
+        NavigationFeedElement* n = static_cast<NavigationFeedElement*>(element);
+        QCOMPARE(n->url(), QUrl(href));
+        break;
+    }
+    case Element::NextLinkType: {
+        NextLinkElement* next = static_cast<NextLinkElement*>(element);
+        QCOMPARE(next->url(), QUrl(href));
+        break;
+    }
+    default:
+        break;
+    }
+
     delete element;
+}
+
+void LinkHandler_Test::hrefAndTypeAreCorrect_data()
+{
+    QTest::addColumn<QString>("type");
+    QTest::addColumn<QString>("rel");
+    QTest::addColumn<QString>("href");
+    QTest::addColumn<int>("elementType");
+
+    QTest::newRow("thumbnail") << ""
+                               << "http://opds-spec.org/thumbnail"
+                               << "a.jpg"
+                               << int(Element::ThumbnailType);
+
+    QTest::newRow("image/thumbnail") << ""
+                                     << "http://opds-spec.org/image/thumbnail"
+                                     << "a.jpg"
+                                     << int(Element::ThumbnailType);
+
+    QTest::newRow("acquisition") << ""
+                                 << "http://opds-spec.org/acquisition"
+                                 << "t.fb2"
+                                 << int(Element::AcquisitionType);
+
+    QTest::newRow("navigation") << "application/atom+xml;profile=opds-catalog"
+                                << ""
+                                << "t.fb2"
+                                << int(Element::NavigationFeedType);
+
+    QTest::newRow("next") << "application/atom+xml;profile=opds-catalog"
+                          << "next"
+                          << "t.fb2"
+                          << int(Element::NextLinkType);
 }
 
 void LinkHandler_Test::cleanup()

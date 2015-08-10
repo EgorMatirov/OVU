@@ -18,35 +18,16 @@
   *
   **/
 
-#include "ContentElement.h"
+#ifndef AUTHOR_HANDLER_H
+#define AUTHOR_HANDLER_H
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
-{
-}
+#include "Handler.h"
 
-Element::ElementType ContentElement::type() const
-{
-    return ElementType::ContentType;
-}
+class AuthorHandler : public Handler{
 
-QString ContentElement::value() const
-{
-    return m_value;
-}
+public:
+    explicit AuthorHandler();
+    Element *parse(QXmlStreamReader &reader) const override;
+};
 
-void ContentElement::setValue(const QString &value)
-{
-    m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
-}
-
-void ContentElement::setContentType(const QString &contentType)
-{
-    m_contentType = contentType;
-}
+#endif // AUTHOR_HANDLER_H

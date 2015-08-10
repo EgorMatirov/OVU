@@ -39,4 +39,3 @@ void TitleElement::setValue(const QString &value)
 {
     m_value = value;
 }
-

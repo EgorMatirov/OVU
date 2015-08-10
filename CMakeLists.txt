@@ -77,7 +77,7 @@ add_custom_target("run" /usr/bin/qmlscene -I ${CMAKE_BINARY_DIR}/backend  ${CMAK
                     DEPENDS OVUbackend OVUbackend-qmldir
                     WORKING_DIRECTORY ./app)
 
-add_custom_target("krazy" krazy2all --export textedit --exclude license,copyright,i18ncheckarg
+add_custom_target("krazy" krazy2all --export textedit --exclude license,copyright,i18ncheckarg,qclasses
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
 
 # No op custom target for all not compiled files, so they show up in the QtCreator project tree

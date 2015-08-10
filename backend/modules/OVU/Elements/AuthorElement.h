@@ -18,35 +18,29 @@
   *
   **/
 
-#include "ContentElement.h"
+#ifndef AUTHOR_ELEMENT_H
+#define AUTHOR_ELEMENT_H
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
-{
-}
+#include "Element.h"
 
-Element::ElementType ContentElement::type() const
-{
-    return ElementType::ContentType;
-}
+#include "NameElement.h"
 
-QString ContentElement::value() const
+class AuthorElement : public Element
 {
-    return m_value;
-}
 
-void ContentElement::setValue(const QString &value)
-{
-    m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
-}
+    Q_OBJECT
 
-void ContentElement::setContentType(const QString &contentType)
-{
-    m_contentType = contentType;
-}
+public:
+    explicit AuthorElement(NameElement *name = new NameElement);
+    ~AuthorElement();
+
+    Element::ElementType type() const override;
+
+    NameElement *name() const;
+    void setName(NameElement *name);
+
+private:
+    NameElement *m_name;
+};
+
+#endif // AUTHOR_ELEMENT_H

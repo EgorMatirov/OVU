@@ -18,35 +18,33 @@
   *
   **/
 
-#include "ContentElement.h"
+#ifndef LINK_ELEMENT_H
+#define LINK_ELEMENT_H
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
-{
-}
+#include "Element.h"
 
-Element::ElementType ContentElement::type() const
-{
-    return ElementType::ContentType;
-}
+#include <QUrl>
 
-QString ContentElement::value() const
+class LinkElement : public Element
 {
-    return m_value;
-}
 
-void ContentElement::setValue(const QString &value)
-{
-    m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
-}
+    Q_OBJECT
 
-void ContentElement::setContentType(const QString &contentType)
-{
-    m_contentType = contentType;
-}
+public:
+    explicit LinkElement(const QString &url = "");
+
+    Element::ElementType type() const override;
+
+    QUrl url() const;
+    void setUrl(const QString &url);
+    void setUrl(const QUrl &url);
+
+    QUrl baseUrl() const;
+    void setBaseUrl(const QUrl &baseUrl);
+
+protected:
+    QUrl m_url;
+    QUrl m_baseUrl;
+};
+
+#endif // LINK_ELEMENT_H

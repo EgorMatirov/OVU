@@ -18,35 +18,27 @@
   *
   **/
 
-#include "ContentElement.h"
+#ifndef NAME_ELEMENT_H
+#define NAME_ELEMENT_H
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
-{
-}
+#include "Element.h"
 
-Element::ElementType ContentElement::type() const
-{
-    return ElementType::ContentType;
-}
+#include <QString>
 
-QString ContentElement::value() const
+class NameElement : public Element
 {
-    return m_value;
-}
 
-void ContentElement::setValue(const QString &value)
-{
-    m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
-}
+    Q_OBJECT
 
-void ContentElement::setContentType(const QString &contentType)
-{
-    m_contentType = contentType;
-}
+public:
+    explicit NameElement(const QString &value = "");
+
+    Element::ElementType type() const override;
+    QString value() const;
+    void setValue(const QString &value);
+
+private:
+    QString m_value;
+};
+
+#endif // NAME_ELEMENT_H

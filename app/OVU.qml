@@ -41,11 +41,19 @@ MainView {
     PageStack{
         id: pageStack
         anchors.fill: parent
-        Component.onCompleted: appendOPDSPage("")
-        function appendOPDSPage(source) {
+        // Append root page here for navigation.
+        Component.onCompleted: appendPage("")
+
+        function appendPage(source) {
             var properties = {source:source};
-            var page = push(Qt.resolvedUrl("OPDSPage.qml"), properties);
-            page.newPageRequested.connect(appendOPDSPage);
+            var page = push(Qt.resolvedUrl("NavigationPage.qml"), properties);
+            page.newPageRequested.connect(appendPage);
+            page.replacingPageRequested.connect(replacePage);
+        }
+
+        function replacePage(source) {
+            pop();
+            appendPage(source);
         }
     }
 }

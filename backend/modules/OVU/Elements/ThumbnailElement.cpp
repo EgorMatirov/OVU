@@ -1,7 +1,27 @@
+/**
+  * This file is part of OVU.
+  *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 3 of the License, or
+  * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  * GNU General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License
+  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+  *
+  * Copyright (C) 2015 Mikhail Ivchenko <ematirov@gmail.com>
+  *
+  **/
+
 #include "ThumbnailElement.h"
 
 ThumbnailElement::ThumbnailElement(const QString &url) :
-    m_url(url)
+    LinkElement(url)
 {
 }
 
@@ -9,30 +29,3 @@ Element::ElementType ThumbnailElement::type() const
 {
     return Element::ThumbnailType;
 }
-
-QString ThumbnailElement::url() const
-{
-    if( m_url.isEmpty() ) {
-        return QString();
-    }
-    if( QUrl(m_url).isRelative() ) {
-        return m_baseUrl.toString() + m_url;
-    } else {
-        return m_url;
-    }
-}
-
-void ThumbnailElement::setUrl(const QString &url)
-{
-    m_url = url;
-}
-QUrl ThumbnailElement::baseUrl() const
-{
-    return m_baseUrl;
-}
-
-void ThumbnailElement::setBaseUrl(const QUrl &baseUrl)
-{
-    m_baseUrl = baseUrl;
-}
-

@@ -21,8 +21,12 @@
 #include "LinkHandler.h"
 
 #include "Elements/ThumbnailElement.h"
+#include "Elements/AcquisitionElement.h"
+#include "Elements/NavigationFeedElement.h"
+#include "Elements/NextLinkElement.h"
 
 #include <QXmlStreamAttributes>
+#include <QDebug>
 
 LinkHandler::LinkHandler()
 {
@@ -37,16 +41,33 @@ Element *LinkHandler::parse(QXmlStreamReader &reader) const
     }
     QString href = attributes.value("href").toString();
     Element *result;
+    bool ok = false;
     if( attributes.hasAttribute("rel") ) {
-        QString type = attributes.value("rel").toString();
-        if( isThumbnailRel(type) ) {
+        QString rel = attributes.value("rel").toString();
+        if( isThumbnailRel(rel) ) {
             result = new ThumbnailElement(href);
-        } else {
-            result = new Element();
+            ok = true;
+        } else if( isAcquisitionRel(rel) ) {
+            result = new AcquisitionElement(href);
+            ok = true;
+        } else if( isNextLinkRer(rel) ) {
+            result = new NextLinkElement(href);
+            ok = true;
         }
-    } else {
+    }
+
+    if ( !ok && attributes.hasAttribute("type") ) {
+        QString type = attributes.value("type").toString();
+        if( isNavigationFeedType(type) ) {
+            result = new NavigationFeedElement(href);
+            ok = true;
+        }
+    }
+
+    if( !ok ) {
         result = new Element();
     }
+
     while( !isEndElement(reader,QString("link")) && !reader.hasError() ) {
         reader.readNext();
     }
@@ -55,5 +76,22 @@ Element *LinkHandler::parse(QXmlStreamReader &reader) const
 
 bool LinkHandler::isThumbnailRel(const QString &rel) const
 {
-    return rel == "http://opds-spec.org/thumbnail";
+    return rel == QLatin1String("http://opds-spec.org/thumbnail")
+            || rel == QLatin1String("http://opds-spec.org/image/thumbnail");
+}
+
+bool LinkHandler::isAcquisitionRel(const QString &rel) const
+{
+    return rel.startsWith(QLatin1String("http://opds-spec.org/acquisition"));
+}
+
+bool LinkHandler::isNavigationFeedType(const QString &type) const
+{
+    QString typeTemplate("application/atom+xml;profile=opds-catalog");
+    return type.startsWith(typeTemplate);
+}
+
+bool LinkHandler::isNextLinkRer(const QString &rel) const
+{
+    return rel == QLatin1String("next");
 }

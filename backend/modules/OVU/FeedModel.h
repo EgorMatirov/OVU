@@ -35,7 +35,11 @@ public:
 
     enum Roles{
         TitleRole = Qt::UserRole,
-        ThumbnailRole
+        ThumbnailRole,
+        NavigationLinkRole,
+        IsAcquisitionRole,
+        AuthorsRole,
+        IsNextLinkRole
     };
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -45,6 +49,7 @@ public:
                       const QModelIndex &parent = QModelIndex()) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     QHash<int,QByteArray> roleNames() const override;
+    bool removeRows(int row, int count, const QModelIndex &parent);
 
 public:
     // Our own functions.

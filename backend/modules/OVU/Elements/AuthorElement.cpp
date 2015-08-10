@@ -18,35 +18,31 @@
   *
   **/
 
-#include "ContentElement.h"
+#include "AuthorElement.h"
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
+AuthorElement::AuthorElement(NameElement *name) :
+    m_name(name)
 {
 }
 
-Element::ElementType ContentElement::type() const
+AuthorElement::~AuthorElement()
 {
-    return ElementType::ContentType;
+    delete m_name;
 }
 
-QString ContentElement::value() const
+Element::ElementType AuthorElement::type() const
 {
-    return m_value;
+    return ElementType::AuthorType;
 }
 
-void ContentElement::setValue(const QString &value)
+NameElement *AuthorElement::name() const
 {
-    m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
+    return m_name;
 }
 
-void ContentElement::setContentType(const QString &contentType)
+void AuthorElement::setName(NameElement *name)
 {
-    m_contentType = contentType;
+    auto tmp = m_name;
+    m_name = name;
+    delete tmp;
 }

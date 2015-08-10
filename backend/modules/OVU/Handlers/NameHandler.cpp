@@ -18,35 +18,24 @@
   *
   **/
 
-#include "ContentElement.h"
+#include "NameHandler.h"
 
-ContentElement::ContentElement(const QString &value,
-                               const QString &contentType) :
-    m_value(value),
-    m_contentType(contentType)
+#include "Elements/NameElement.h"
+
+NameHandler::NameHandler()
 {
 }
 
-Element::ElementType ContentElement::type() const
+Element *NameHandler::parse(QXmlStreamReader &reader) const
 {
-    return ElementType::ContentType;
-}
-
-QString ContentElement::value() const
-{
-    return m_value;
-}
-
-void ContentElement::setValue(const QString &value)
-{
-    m_value = value;
-}
-QString ContentElement::contentType() const
-{
-    return m_contentType;
-}
-
-void ContentElement::setContentType(const QString &contentType)
-{
-    m_contentType = contentType;
+    Q_ASSERT(reader.isStartElement());
+    QString value;
+    QXmlStreamReader::TokenType currentToken = reader.readNext();
+    while( !isEndElement(reader,QString("name")) && !reader.hasError() ) {
+        if( currentToken == QXmlStreamReader::Characters ) {
+            value+=reader.text();
+        }
+        currentToken = reader.readNext();
+    }
+    return new NameElement(value);
 }

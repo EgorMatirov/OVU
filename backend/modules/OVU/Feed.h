@@ -25,37 +25,48 @@
 
 #include <QObject>
 #include <QXmlStreamReader>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 class Feed : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString sourceText READ sourceText WRITE setSource NOTIFY sourceChanged)
+    Q_PROPERTY(QString sourceText READ sourceText WRITE setSource
+               NOTIFY sourceChanged)
     Q_PROPERTY(FeedModel *model READ model NOTIFY modelChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
 
 public:
     explicit Feed(QObject *parent = 0);
     ~Feed();
-    void setSource(const QString &sourceText);
+    void setSource(const QString &sourceText, const QUrl &url=QUrl());
     QString sourceText() { return m_source; }
+
     FeedModel *model();
 
     QString title() const;
     void setTitle(const QString &title);
 
+    Q_INVOKABLE void get(const QUrl &url);
+
 Q_SIGNALS:
     void sourceChanged();
     void modelChanged();
     void titleChanged();
-    void errorHappened();
+    void errorHappened(QString message);
+    void authRequired();
     void parsingFinished();
+
+private slots:
+    void parse(QNetworkReply *reply);
 
 protected:
     void printError(const QXmlStreamReader &reader) const;
     QString m_source;
     FeedModel *m_model;
     QString m_title;
+    QNetworkAccessManager *m_networkManager;
 };
 
 #endif // FEED_H

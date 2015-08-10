@@ -31,7 +31,8 @@ Element *Handler::parse(QXmlStreamReader &reader) const
     return new Element();
 }
 
-bool Handler::isEndElement(const QXmlStreamReader &reader, const QString &elementName) const
+bool Handler::isEndElement(const QXmlStreamReader &reader,
+                           const QString &elementName) const
 {
     return reader.isEndElement() && reader.name().compare(elementName) == 0;
 }

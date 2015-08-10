@@ -24,7 +24,7 @@ import Ubuntu.Components 1.2
 
 Item {
     id: root
-    height: titleLabel.height + contentLabel.height
+    height: titleLabel.height + authorsLabel.height
     RowLayout {
         anchors.fill: parent
         width: parent.width
@@ -35,7 +35,9 @@ Item {
             visible: true
             Thumbnail {
                 id: thumbnailImage
-                source: thumbnail === "" ? "test.jpg" : thumbnail
+                source: thumbnail.toString() === ""
+                        ? Qt.resolvedUrl("graphics/book.png")
+                        : thumbnail
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
@@ -47,7 +49,6 @@ Item {
                 id: titleLabel
                 text: title
                 fontSize: "large"
-                font.weight: Font.Light
                 wrapMode: Text.Wrap
                 width: parent.width
                 anchors {
@@ -57,8 +58,8 @@ Item {
                 }
             }
             Label {
-                id: contentLabel
-                text: content
+                id: authorsLabel
+                text: authors.join(", ")
                 wrapMode: Text.Wrap
                 width: parent.width
                 anchors {

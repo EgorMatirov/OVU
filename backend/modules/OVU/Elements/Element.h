@@ -34,7 +34,12 @@ public:
         TitleType,
         EntryType,
         ContentType,
-        ThumbnailType
+        ThumbnailType,
+        AcquisitionType,
+        NavigationFeedType,
+        NameType,
+        AuthorType,
+        NextLinkType
     };
 
 public:

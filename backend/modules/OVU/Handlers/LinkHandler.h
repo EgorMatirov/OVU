@@ -30,7 +30,10 @@ public:
     Element *parse(QXmlStreamReader &reader) const;
 
 private:
-    bool isThumbnailRel( const QString &rel) const;
+    bool isThumbnailRel(const QString &rel) const;
+    bool isAcquisitionRel(const QString &rel) const;
+    bool isNavigationFeedType(const QString &type) const;
+    bool isNextLinkRer(const QString &rel) const;
 };
 
 #endif // LINK_HANDLER_H
