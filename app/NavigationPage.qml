@@ -23,7 +23,7 @@ import Ubuntu.Components 1.2
 
 Page {
     id: root
-    title: qsTr("Loading...")
+    title: i18n.tr("Loading...")
 
     property url source: ""
 

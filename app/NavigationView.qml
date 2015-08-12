@@ -30,18 +30,25 @@ Item {
     signal parsingFinished()
     property alias title: feed.title
     property url sourceUrl: ""
-    property bool busy: false
+    property bool isLoadingNextPage: false
     onSourceUrlChanged: feed.get(root.sourceUrl)
     Component.onCompleted: feed.get(root.sourceUrl)
 
     Feed {
         id: feed
-        onParsingFinished: root.parsingFinished()
+        onParsingFinished: {
+            root.isLoadingNextPage = false;
+            root.parsingFinished();
+        }
         onAuthRequired: {
+            root.isLoadingNextPage = false;
             var message = i18n.tr("Sorry, authorization isn't supported yet.");
             root.errorHappened(message);
         }
-        onErrorHappened: root.errorHappened(message);
+        onErrorHappened: {
+            root.isLoadingNextPage = false;
+            root.errorHappened(message);
+        }
     }
     
     ListView {
@@ -62,8 +69,8 @@ Item {
                 onTriggered: {
                     if( !isAcquisition ) {
                         if( isNextLink ) {
-                            console.log("Next page requested!");
-                            root.replacingPageRequested(navigationLink);
+                            feed.getNextPage();
+                            root.isLoadingNextPage = true;
                         } else {
                             root.newPageRequested(navigationLink);
                         }
@@ -80,6 +87,7 @@ Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 width: parent.width
+                property bool loading: root.isLoadingNextPage
             }
         }
     }

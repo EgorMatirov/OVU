@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-10 17:13+0400\n"
+"POT-Creation-Date: 2015-08-12 13:40+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/NavigationView.qml:41
+#: ../app/NavigationPage.qml:26 ../app/NextLinkEntry.qml:31
+msgid "Loading..."
+msgstr ""
+
+#: ../app/NavigationView.qml:45
 msgid "Sorry, authorization isn't supported yet."
 msgstr ""
 
-#: ../backend/modules/OVU/Feed.cpp:79
+#: ../app/NextLinkEntry.qml:31
 msgid "Next page"
 msgstr ""
 
-#: ../backend/modules/OVU/Feed.cpp:92
+#: ../backend/modules/OVU/Feed.cpp:96
 msgid "Parsing failed."
 msgstr ""
 

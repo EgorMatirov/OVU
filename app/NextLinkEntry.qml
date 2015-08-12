@@ -22,12 +22,13 @@ import QtQuick 2.0
 import Ubuntu.Components 1.2
 
 Item {
+
     id: root
     height: label.height * 2
 
     Label {
         id: label
-        text: title
+        text: loading ? i18n.tr("Loading...") : i18n.tr("Next page")
         fontSize: "large"
         font.weight: Font.Light
         wrapMode: Text.Wrap

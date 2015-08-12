@@ -49,6 +49,7 @@ public:
     void setTitle(const QString &title);
 
     Q_INVOKABLE void get(const QUrl &url);
+    Q_INVOKABLE void getNextPage();
 
 Q_SIGNALS:
     void sourceChanged();
@@ -67,6 +68,8 @@ protected:
     FeedModel *m_model;
     QString m_title;
     QNetworkAccessManager *m_networkManager;
+    QUrl m_nextPageUrl;
+    bool m_isAddingNextPage;
 };
 
 #endif // FEED_H

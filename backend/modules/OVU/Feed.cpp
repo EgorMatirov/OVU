@@ -32,7 +32,9 @@ Feed::Feed(QObject *parent) :
     QObject(parent),
     m_source(""),
     m_model(new FeedModel),
-    m_networkManager(new QNetworkAccessManager)
+    m_networkManager(new QNetworkAccessManager),
+    m_nextPageUrl(QUrl()),
+    m_isAddingNextPage(false)
 {
     connect(m_networkManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(parse(QNetworkReply*)));
@@ -53,6 +55,7 @@ void Feed::setSource(const QString &source, const QUrl &url)
     m_source = source;
     QXmlStreamReader reader(source);
     EntryElement *nextLinkEntry = nullptr;
+    int indexOfPreviousNextLink = m_model->rowCount()-1;
     while( !reader.atEnd() && !reader.hasError() ) {
         reader.readNext();
         if( reader.isStartElement() ) {
@@ -64,7 +67,7 @@ void Feed::setSource(const QString &source, const QUrl &url)
               * know about it and we handle it later.
               */
             Element *element = handler->parse(reader);
-            if( element->type() == Element::TitleType ) {
+            if( element->type() == Element::TitleType && !m_isAddingNextPage) {
                 TitleElement *title = static_cast<TitleElement*>(element);
                 setTitle(title->value());
             }
@@ -76,12 +79,13 @@ void Feed::setSource(const QString &source, const QUrl &url)
                 NextLinkElement *nextLink =
                         static_cast<NextLinkElement*>(element);
                 nextLinkEntry = new EntryElement();
-                nextLinkEntry->setTitle(new TitleElement(tr("Next page")));
                 NavigationFeedElement *navigationFeed =
                         new NavigationFeedElement(nextLink->url().toString());
                 nextLinkEntry->setNavigationFeed(navigationFeed);
                 nextLinkEntry->setIsNextEntry(true);
                 nextLinkEntry->setBaseUrl(url);
+                m_nextPageUrl=nextLinkEntry->navigationFeed()->url();
+                delete nextLink;
             } else {
                 delete element; // we are not using it anyway.
             }
@@ -92,8 +96,12 @@ void Feed::setSource(const QString &source, const QUrl &url)
         emit errorHappened(tr("Parsing failed."));
     }
     if( nextLinkEntry != nullptr ) {
+        if( m_isAddingNextPage ) {
+            m_model->removeRow(indexOfPreviousNextLink);
+        }
         m_model->appendEntry(nextLinkEntry);
     }
+    m_isAddingNextPage = false;
     qDebug() << "Parsing finished." << timer.elapsed() << "milliseconds";
     emit parsingFinished();
 }
@@ -130,6 +138,12 @@ void Feed::get(const QUrl &url)
         request.setRawHeader("User-Agent", userAgent.toUtf8());
         m_networkManager->get(request);
     }
+}
+
+void Feed::getNextPage()
+{
+    m_isAddingNextPage = true;
+    get(m_nextPageUrl);
 }
 
 void Feed::parse(QNetworkReply *reply)
