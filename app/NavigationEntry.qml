@@ -30,7 +30,6 @@ Item {
             id: titleLabel
             text: title
             fontSize: "large"
-            font.weight: Font.Light
             wrapMode: Text.Wrap
             width: parent.width
             anchors {

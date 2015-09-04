@@ -72,6 +72,11 @@ void LinkElement_Test::urlIsCorrect_data()
             << "/example2"
             << QUrl("http://example.org/")
             << QUrl("http://example.org/example2");
+
+    QTest::newRow("Base url and relative url without /")
+            << "example2"
+            << QUrl("http://example.org/")
+            << QUrl("http://example.org/example2");
 }
 
 QTEST_MAIN(LinkElement_Test)

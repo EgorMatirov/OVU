@@ -35,12 +35,11 @@ Element::ElementType LinkElement::type() const
 QUrl LinkElement::url() const
 {
     if( m_url.isEmpty() ) {
-        return QString();
+        return QUrl();
     }
+
     if( m_url.isRelative() ) {
-        QUrl url(m_baseUrl);
-        url.setPath(m_url.path());
-        return url.toString();
+        return m_baseUrl.resolved(m_url);
     } else {
         return m_url;
     }

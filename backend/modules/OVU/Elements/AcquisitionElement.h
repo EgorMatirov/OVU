@@ -23,15 +23,36 @@
 
 #include "LinkElement.h"
 
+#include <QMimeDatabase>
+#include <QMap>
+
 class AcquisitionElement : public LinkElement
 {
 
     Q_OBJECT
 
 public:
-    explicit AcquisitionElement(const QString &url = "");
+    explicit AcquisitionElement(const QString &url = "",
+                                const QString &contentType = "",
+                                bool isPaid = false,
+                                bool isSample = false);
 
     Element::ElementType type() const override;
+    QString contentType() const;
+    void setContentType(const QString &contentType);
+
+    bool isPaid() const;
+    void setIsPaid(bool isPaid);
+
+    bool isSample() const;
+    void setIsSample(bool isSample);
+
+private:
+    QString m_contentType;
+    bool m_isPaid;
+    bool m_isSample;
+    static const QMimeDatabase m_mimeDatabase;
+    static QMap<QString,QString> m_mimeNames;
 };
 
 #endif // ACQUISITION_ELEMENT_H

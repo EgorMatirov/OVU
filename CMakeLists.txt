@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.8.11)
 
 enable_testing()
 
+#include(cmake/Click.cmake)
+
 # Do not remove this line, its required for the correct functionality of the Ubuntu-SDK
 set(UBUNTU_MANIFEST_PATH "manifest.json.in" CACHE INTERNAL "Tells QtCreator location and name of the manifest file")
 set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -27,7 +29,7 @@ set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
 option(INSTALL_TESTS "Install the tests on make install" on)
 
 set(APP_NAME          OVU)
-set(APP_ID            "ovu.egormatirov")
+set(APP_ID            "ovu.ematirov")
 set(OVU_DIR "share/qml/OVU")
 set(MAIN_QML          "OVU.qml")
 set(ICON              "graphics/OVU.png")
@@ -52,10 +54,12 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json
         DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 install(DIRECTORY "app/graphics" DESTINATION ${DATA_DIR})
-install(FILES "OVU.apparmor" DESTINATION ${DATA_DIR})
+install(FILES "OVU.apparmor" "OVU.contenthub" DESTINATION ${DATA_DIR})
 
 # Add add_test_OVU macro
 include(cmake/Test.cmake)
+# Add add_backend_module macro
+include(cmake/BackendModule.cmake)
 
 add_subdirectory(app)
 add_subdirectory(backend)
@@ -81,5 +85,5 @@ add_custom_target("krazy" krazy2all --export textedit --exclude license,copyrigh
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
 
 # No op custom target for all not compiled files, so they show up in the QtCreator project tree
-add_custom_target("ovu_ClickFiles" ALL SOURCES "OVU.apparmor" "manifest.json.in")
+add_custom_target("ovu_ClickFiles" ALL SOURCES "OVU.apparmor" "manifest.json.in" "OVU.contenthub")
 

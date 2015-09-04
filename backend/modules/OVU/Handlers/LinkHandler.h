@@ -32,6 +32,8 @@ public:
 private:
     bool isThumbnailRel(const QString &rel) const;
     bool isAcquisitionRel(const QString &rel) const;
+    bool isAcquisitionBuyRel(const QString &rel) const;
+    bool isAcquisitionSampleRel(const QString &rel) const;
     bool isNavigationFeedType(const QString &type) const;
     bool isNextLinkRer(const QString &rel) const;
 };

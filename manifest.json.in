@@ -1,17 +1,16 @@
 {
     "name": "@APP_ID@",
-    "description": "description of OVU",
+    "description": "A simple OPDS viewer for Ubuntu",
     "architecture": "@CLICK_ARCH@",
     "title": "@APP_NAME@",
     "hooks": {
         "OVU": {
+            "content-hub": "OVU.contenthub",
             "apparmor": "OVU.apparmor",
-            "desktop":  "OVU.desktop"
+            "desktop": "OVU.desktop"
         }
     },
     "version": "0.1",
     "maintainer": "Mikhail Ivchenko <ematirov@gmail.com>",
-    "framework" : "ubuntu-sdk-15.04"
+    "framework": "ubuntu-sdk-15.04"
 }
-
-

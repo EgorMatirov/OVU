@@ -36,6 +36,7 @@ class Feed : public QObject
                NOTIFY sourceChanged)
     Q_PROPERTY(FeedModel *model READ model NOTIFY modelChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
+    Q_PROPERTY(QUrl url READ url NOTIFY urlChanged)
 
 public:
     explicit Feed(QObject *parent = 0);
@@ -48,16 +49,20 @@ public:
     QString title() const;
     void setTitle(const QString &title);
 
+    Q_INVOKABLE void get(const QString &urlString);
     Q_INVOKABLE void get(const QUrl &url);
     Q_INVOKABLE void getNextPage();
+
+    QUrl url() const;
 
 Q_SIGNALS:
     void sourceChanged();
     void modelChanged();
     void titleChanged();
+    void urlChanged();
     void errorHappened(QString message);
     void authRequired();
-    void parsingFinished();
+    void parsingFinished(bool hasError);
 
 private slots:
     void parse(QNetworkReply *reply);
@@ -68,6 +73,7 @@ protected:
     FeedModel *m_model;
     QString m_title;
     QNetworkAccessManager *m_networkManager;
+    QUrl m_url;
     QUrl m_nextPageUrl;
     bool m_isAddingNextPage;
 };

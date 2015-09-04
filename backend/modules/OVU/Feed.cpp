@@ -56,6 +56,9 @@ void Feed::setSource(const QString &source, const QUrl &url)
     QXmlStreamReader reader(source);
     EntryElement *nextLinkEntry = nullptr;
     int indexOfPreviousNextLink = m_model->rowCount()-1;
+    if( !m_isAddingNextPage ) {
+        m_model->removeRows(0, m_model->rowCount(), QModelIndex());
+    }
     while( !reader.atEnd() && !reader.hasError() ) {
         reader.readNext();
         if( reader.isStartElement() ) {
@@ -102,8 +105,10 @@ void Feed::setSource(const QString &source, const QUrl &url)
         m_model->appendEntry(nextLinkEntry);
     }
     m_isAddingNextPage = false;
+    m_url = url;
+    emit urlChanged();
     qDebug() << "Parsing finished." << timer.elapsed() << "milliseconds";
-    emit parsingFinished();
+    emit parsingFinished( reader.hasError() );
 }
 
 FeedModel *Feed::model()
@@ -119,6 +124,11 @@ void Feed::printError(const QXmlStreamReader &reader) const
     QStringList lines = m_source.split('\n');
     qDebug() << "Text:" << lines[reader.lineNumber() - 1];
 }
+QUrl Feed::url() const
+{
+    return m_url;
+}
+
 QString Feed::title() const
 {
     return m_title;
@@ -140,6 +150,11 @@ void Feed::get(const QUrl &url)
     }
 }
 
+void Feed::get(const QString &urlString)
+{
+    get(QUrl::fromUserInput(urlString));
+}
+
 void Feed::getNextPage()
 {
     m_isAddingNextPage = true;
@@ -156,8 +171,14 @@ void Feed::parse(QNetworkReply *reply)
                 emit errorHappened(reply->errorString());
             }
         } else {
-            QString data = reply->readAll();
-            setSource(data, reply->url());
+            QUrl redirectUrl = reply->attribute(
+                        QNetworkRequest::RedirectionTargetAttribute).toUrl();
+            if( !redirectUrl.isEmpty() ) {
+                get(redirectUrl);
+            } else {
+                QString data = reply->readAll();
+                setSource(data, reply->url());
+            }
         }
     }
 }

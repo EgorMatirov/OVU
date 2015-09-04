@@ -37,6 +37,7 @@ public:
         TitleRole = Qt::UserRole,
         ThumbnailRole,
         NavigationLinkRole,
+        AcquisitionsRole,
         IsAcquisitionRole,
         AuthorsRole,
         IsNextLinkRole

@@ -30,8 +30,8 @@ class LinkHandler_Test : public QObject {
     Q_OBJECT
 private slots:
     void elementIsUnsupportedIfLinkWithoutRel();
-    void hrefAndTypeAreCorrect();
-    void hrefAndTypeAreCorrect_data();
+    void resultIsCorrect();
+    void resultIsCorrect_data();
     void cleanup();
 private:
     LinkHandler handler;
@@ -51,12 +51,13 @@ void LinkHandler_Test::elementIsUnsupportedIfLinkWithoutRel()
     delete element;
 }
 
-void LinkHandler_Test::hrefAndTypeAreCorrect()
+void LinkHandler_Test::resultIsCorrect()
 {
     QFETCH(QString, type);
     QFETCH(QString, rel);
     QFETCH(QString, href);
     QFETCH(int, elementType);
+    QFETCH(bool, isPaid);
 
     QString data = QString("<link href=\"%1\" rel=\"%2\" type=\"%3\"/>")
             .arg(href)
@@ -77,6 +78,7 @@ void LinkHandler_Test::hrefAndTypeAreCorrect()
     case Element::AcquisitionType: {
         AcquisitionElement *acq = static_cast<AcquisitionElement*>(element);
         QCOMPARE(acq->url(), QUrl(href));
+        QCOMPARE(acq->isPaid(), isPaid);
         break;
     }
     case Element::NavigationFeedType: {
@@ -96,37 +98,64 @@ void LinkHandler_Test::hrefAndTypeAreCorrect()
     delete element;
 }
 
-void LinkHandler_Test::hrefAndTypeAreCorrect_data()
+// TODO: Add data for different content types.
+
+void LinkHandler_Test::resultIsCorrect_data()
 {
     QTest::addColumn<QString>("type");
     QTest::addColumn<QString>("rel");
     QTest::addColumn<QString>("href");
     QTest::addColumn<int>("elementType");
+    QTest::addColumn<bool>("isPaid");
+    QTest::addColumn<bool>("isSample");
 
     QTest::newRow("thumbnail") << ""
                                << "http://opds-spec.org/thumbnail"
                                << "a.jpg"
-                               << int(Element::ThumbnailType);
+                               << int(Element::ThumbnailType)
+                               << false;
 
     QTest::newRow("image/thumbnail") << ""
                                      << "http://opds-spec.org/image/thumbnail"
                                      << "a.jpg"
-                                     << int(Element::ThumbnailType);
+                                     << int(Element::ThumbnailType)
+                                     << false
+                                     << false;
 
     QTest::newRow("acquisition") << ""
                                  << "http://opds-spec.org/acquisition"
                                  << "t.fb2"
-                                 << int(Element::AcquisitionType);
+                                 << int(Element::AcquisitionType)
+                                 << false
+                                 << false;
+
+    QTest::newRow("acquisition/buy") << ""
+                                 << "http://opds-spec.org/acquisition/buy"
+                                 << "t.fb2"
+                                 << int(Element::AcquisitionType)
+                                 << true
+                                 << false;
+
+    QTest::newRow("acquisition/sample") << ""
+                                 << "http://opds-spec.org/acquisition/sample"
+                                 << "t.fb2"
+                                 << int(Element::AcquisitionType)
+                                 << false
+                                 << true;
 
     QTest::newRow("navigation") << "application/atom+xml;profile=opds-catalog"
                                 << ""
                                 << "t.fb2"
-                                << int(Element::NavigationFeedType);
+                                << int(Element::NavigationFeedType)
+                                << false
+                                << false;
 
     QTest::newRow("next") << "application/atom+xml;profile=opds-catalog"
                           << "next"
                           << "t.fb2"
-                          << int(Element::NextLinkType);
+                          << int(Element::NextLinkType)
+                          << false
+                          << false;
 }
 
 void LinkHandler_Test::cleanup()

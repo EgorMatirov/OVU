@@ -19,21 +19,37 @@
   **/
 
 import QtQuick 2.0
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.2
+import Ubuntu.Components.Popups 1.0
+import Ubuntu.Content 1.1
 
-Item {
+Page {
     id: root
-    property alias message: label.text
+    property alias path: item.url
 
-    function show()
-    {
-        visible = true;
+    signal popRequested()
+
+    ContentItem{
+        id: item
     }
-    
-    Label {
-        id: label
-        anchors.centerIn: parent
-        width: parent.width
-        wrapMode: Text.Wrap
+    ContentPeerPicker {
+        id: picker
+        contentType: ContentType.EBooks
+        handler: ContentHandler.Destination
+        onPeerSelected: {
+            var transfer = peer.request();
+            transfer.items=[item];
+            transfer.state = ContentTransfer.Charged;
+            transfer.stateChanged.connect( function() {
+                if(transfer.state === ContentTransfer.Aborted
+                        || transfer.state === ContentTransfer.Collected) {
+                    root.popRequested();
+                }
+            } );
+        }
+        onCancelPressed: {
+            root.popRequested();
+        }
     }
 }

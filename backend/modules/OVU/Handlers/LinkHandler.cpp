@@ -40,6 +40,7 @@ Element *LinkHandler::parse(QXmlStreamReader &reader) const
         return new Element();
     }
     QString href = attributes.value("href").toString();
+    QString contentType = attributes.value("type").toString();
     Element *result;
     bool ok = false;
     if( attributes.hasAttribute("rel") ) {
@@ -48,7 +49,10 @@ Element *LinkHandler::parse(QXmlStreamReader &reader) const
             result = new ThumbnailElement(href);
             ok = true;
         } else if( isAcquisitionRel(rel) ) {
-            result = new AcquisitionElement(href);
+            bool isPaid = isAcquisitionBuyRel(rel);
+            bool isSample = isAcquisitionSampleRel(rel);
+            result = new AcquisitionElement(href, contentType,
+                                            isPaid, isSample);
             ok = true;
         } else if( isNextLinkRer(rel) ) {
             result = new NextLinkElement(href);
@@ -85,9 +89,19 @@ bool LinkHandler::isAcquisitionRel(const QString &rel) const
     return rel.startsWith(QLatin1String("http://opds-spec.org/acquisition"));
 }
 
+bool LinkHandler::isAcquisitionBuyRel(const QString &rel) const
+{
+    return rel == QLatin1String("http://opds-spec.org/acquisition/buy");
+}
+
+bool LinkHandler::isAcquisitionSampleRel(const QString &rel) const
+{
+    return rel == QLatin1String("http://opds-spec.org/acquisition/sample");
+}
+
 bool LinkHandler::isNavigationFeedType(const QString &type) const
 {
-    QString typeTemplate("application/atom+xml;profile=opds-catalog");
+    QString typeTemplate("application/atom+xml");
     return type.startsWith(typeTemplate);
 }
 

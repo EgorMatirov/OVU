@@ -3,38 +3,36 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-04 21:55+0400\n"
-"PO-Revision-Date: 2015-09-04 21:56+0400\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: ru\n"
+"POT-Creation-Date: 2015-09-04 21:58+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.5\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../app/BookPage.qml:127
 msgid "Open"
-msgstr "Открыть"
+msgstr ""
 
 #: ../app/DownloadAction.qml:12
 msgid "Buy"
-msgstr "Купить"
+msgstr ""
 
 #: ../app/DownloadAction.qml:14
 #, qt-format
 msgid "%1 (sample)"
-msgstr "%1 (фрагмент)"
+msgstr ""
 
 #: ../app/InfoPage.qml:27 ../app/SourcesPage.qml:45
 msgid "About"
-msgstr "О программе"
+msgstr ""
 
 #: ../app/InfoPage.qml:35
 msgid ""
@@ -47,90 +45,80 @@ msgid ""
 "take any responsibility for content of third-party OPDS catalogs. It's "
 "possbile that some catalogs can have illegal in your country entries."
 msgstr ""
-"Это программа - простой клиент для OPDS каталогов.<br>Она позволяет вам:"
-"<ul><li>Просматривать различные OPDS каталоги.</li><li>Просматривать "
-"информацию о книге.</li><li>Открывать книги в сторонних программах.</li></"
-"ul><br> ©2015 Михаил Ивченко <ematirov@gmail.com> под лицензией GNU GPLv3."
-"<br><br>Программа предоставляется \"КАК ЕСТЬ\",  БЕЗ КАКИХ ЛИБО ГАРАНТИЙ "
-"(ЗАЯВЛЕННЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ), ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, "
-"ПОДРАЗУМЕВАЕМЫМИ ГАРАНТИЯМИ ТОВАРНОГО СОСТОЯНИЯ ПРИ ПРОДАЖЕ И ГОДНОСТИ ДЛЯ "
-"ОПРЕДЕЛЁННОГО ПРИМЕНЕНИЯ.<br><br><b>Внимание:<b><br>Автор не несет никакой "
-"ответственности за содержимое сторонних OPDS-каталогов. Возможно, что "
-"некоторые каталоги могут иметь нелегальные для вашей страны произведения."
 
 #: ../app/NavigationPage.qml:26 ../app/NextLinkEntry.qml:31
 msgid "Loading..."
-msgstr "Загрузка..."
+msgstr ""
 
 #: ../app/NavigationView.qml:46
 msgid "Sorry, authorization isn't supported yet."
-msgstr "Извините, авторизация пока не поддерживается."
+msgstr ""
 
 #: ../app/NewSourceDialog.qml:7
 msgid "Add new catalog"
-msgstr "Добавить новый каталог"
+msgstr ""
 
 #: ../app/NewSourceDialog.qml:45
 msgid "URL of catalog"
-msgstr "Адрес каталога"
+msgstr ""
 
 #: ../app/NewSourceDialog.qml:59
 msgid "Cancel"
-msgstr "Отмена"
+msgstr ""
 
 #: ../app/NewSourceDialog.qml:67
 msgid "Add"
-msgstr "Добавить"
+msgstr ""
 
 #: ../app/NextLinkEntry.qml:31
 msgid "Next page"
-msgstr "Следующая страница"
+msgstr ""
 
 #: ../app/SourcesPage.qml:30
 msgid "Choose catalog"
-msgstr "Выберите каталог"
+msgstr ""
 
 #: ../app/SourcesPage.qml:38
 msgid "Add..."
-msgstr "Добавить..."
+msgstr ""
 
 #: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:52
 msgid "mobi"
-msgstr "mobi"
+msgstr ""
 
 #: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:53
 msgid "epub"
-msgstr "epub"
+msgstr ""
 
 #: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:54
 msgid "rtf"
-msgstr "rtf"
+msgstr ""
 
 #: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:55
 msgid "txt"
-msgstr "txt"
+msgstr ""
 
 #: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:56
 #: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:57
 msgid "html"
-msgstr "html"
+msgstr ""
 
 #: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:58
 msgid "fb2"
-msgstr "fb2"
+msgstr ""
 
 #: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:59
 msgid "pdf"
-msgstr "pdf"
+msgstr ""
 
 #: ../backend/modules/OVU/Feed.cpp:99
 msgid "Parsing failed."
-msgstr "Чтение завершилось неуспешно."
+msgstr ""
 
 #: /home/ematirov/Projects/build-OVU-Ubuntu_Device_GCC_armhf_ubuntu_sdk_15_04_vivid-Default/po/OVU.desktop.in.h:1
 msgid "OVU"
-msgstr "OVU"
+msgstr ""
 
 #: /home/ematirov/Projects/build-OVU-Ubuntu_Device_GCC_armhf_ubuntu_sdk_15_04_vivid-Default/po/OVU.desktop.in.h:2
 msgid "A simple OPDS Viewer for Ubuntu"
-msgstr "Простой OPDS клиент для Ubuntu"
+msgstr ""

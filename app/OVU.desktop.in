@@ -1,6 +1,6 @@
 [Desktop Entry]
 _Name=OVU
-Comment=My project description
+_Comment=A simple OPDS Viewer for Ubuntu
 Exec=@EXEC@
 Icon=@ICON@
 Terminal=false

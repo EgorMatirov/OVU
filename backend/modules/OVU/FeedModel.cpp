@@ -20,7 +20,6 @@
 
 #include "FeedModel.h"
 
-
 FeedModel::FeedModel()
 {
 }
@@ -47,30 +46,36 @@ QVariant FeedModel::data(const QModelIndex &index, int role) const
         switch(role) {
         case Qt::DisplayRole:
             return entry->content()->value();
-            break;
         case TitleRole:
             return entry->title()->value();
-            break;
         case ThumbnailRole:
             return entry->thumbnail()->url();
-            break;
         case NavigationLinkRole:
             return entry->navigationFeed()->url();
-            break;
+        case AcquisitionsRole: {
+            QList<QVariant> acquisitions;
+            foreach( AcquisitionElement *acquisition, entry->acquisitions() ) {
+                QList<QVariant> info;
+                info << acquisition->contentType()
+                     << acquisition->url()
+                     << acquisition->isPaid()
+                     << acquisition->isSample();
+                acquisitions.append(QVariant(info));
+            }
+            return acquisitions;
+        }
         case IsAcquisitionRole:
             return !entry->acquisitions().isEmpty();
             break;
         case AuthorsRole: {
             QStringList authors;
-            foreach (AuthorElement *author, entry->authors()) {
+            foreach( AuthorElement *author, entry->authors() ) {
                 authors.append(author->name()->value());
             }
             return authors;
-            break;
         }
         case IsNextLinkRole:
             return entry->isNextEntry();
-            break;
         }
     }
     return QVariant();
@@ -107,6 +112,7 @@ QHash<int, QByteArray> FeedModel::roleNames() const
     hash[TitleRole] = "title";
     hash[ThumbnailRole] = "thumbnail";
     hash[NavigationLinkRole] = "navigationLink";
+    hash[AcquisitionsRole] = "acquisitions";
     hash[IsAcquisitionRole] = "isAcquisition";
     hash[AuthorsRole] = "authors";
     hash[IsNextLinkRole] = "isNextLink";

@@ -25,8 +25,9 @@ import OVU 1.0
 Item {
     id: root
     signal errorHappened(string error)
-    signal newPageRequested(url source)
-    signal replacingPageRequested(url source)
+    signal newNavigationPageRequested(url path)
+    signal newBookPageRequested(var params)
+    signal replacingPageRequested(url path)
     signal parsingFinished()
     property alias title: feed.title
     property url sourceUrl: ""
@@ -72,8 +73,18 @@ Item {
                             feed.getNextPage();
                             root.isLoadingNextPage = true;
                         } else {
-                            root.newPageRequested(navigationLink);
+                            root.newNavigationPageRequested(navigationLink);
                         }
+                    } else {
+                        var params = {
+                            authors: authors,
+                            thumbnail: thumbnail,
+                            title: title,
+                            description: content,
+                            acquisitions: acquisitions
+                        };
+
+                        root.newBookPageRequested(params);
                     }
                 }
             }

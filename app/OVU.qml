@@ -19,9 +19,10 @@
   **/
 
 import QtQuick 2.0
+import U1db 1.0
 import Ubuntu.Components 1.2
-
 MainView {
+    id: mainView
     // objectName for functional testing purposes (autopilot-qt5)
     objectName: "mainView"
 
@@ -38,22 +39,44 @@ MainView {
     width: units.gu(100)
     height: units.gu(76)
 
+
+
     PageStack{
         id: pageStack
         anchors.fill: parent
         // Append root page here for navigation.
-        Component.onCompleted: appendPage("")
+        Component.onCompleted: {
+            var page = push(Qt.resolvedUrl("SourcesPage.qml"));
+            page.newNavigationPageRequested.connect(appendNavigationPage);
+            page.onInfoPageRequested.connect(appendInfoPage);
+        }
 
-        function appendPage(source) {
-            var properties = {source:source};
-            var page = push(Qt.resolvedUrl("NavigationPage.qml"), properties);
-            page.newPageRequested.connect(appendPage);
+        function appendNavigationPage(path) {
+            var params = {path:path};
+            var page = push(Qt.resolvedUrl("NavigationPage.qml"), params);
+            page.newNavigationPageRequested.connect(appendNavigationPage);
+            page.newBookPageRequested.connect(appendBookPage);
             page.replacingPageRequested.connect(replacePage);
         }
 
-        function replacePage(source) {
+        function appendBookPage(params) {
+            var page = push(Qt.resolvedUrl("BookPage.qml"), params);
+            page.sharePageRequested.connect(openSharePage);
+        }
+
+        function replacePage(path) {
             pop();
-            appendPage(source);
+            appendNavigationPage(path);
+        }
+
+        function openSharePage(path) {
+            var params = {path: path};
+            var page = push(Qt.resolvedUrl("SharePage.qml"), params);
+            page.popRequested.connect(pop);
+        }
+
+        function appendInfoPage() {
+            var page = push(Qt.resolvedUrl("InfoPage.qml"), {});
         }
     }
 }

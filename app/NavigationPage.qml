@@ -25,7 +25,7 @@ Page {
     id: root
     title: i18n.tr("Loading...")
 
-    property url source: ""
+    property url path: ""
 
     function showError(error) {
         activityIndicator.running = false;
@@ -35,8 +35,9 @@ Page {
         errorView.show();
     }
 
-    signal newPageRequested(url source)
-    signal replacingPageRequested(url source)
+    signal newNavigationPageRequested(url path)
+    signal newBookPageRequested(var params)
+    signal replacingPageRequested(url path)
 
     flickable: null
 
@@ -60,14 +61,15 @@ Page {
                 root.title = loader.item.title
             }
             onErrorHappened: root.showError(error)
-            onNewPageRequested: root.newPageRequested(source)
-            onReplacingPageRequested: root.replacingPageRequested(source)
+            onNewNavigationPageRequested: root.newNavigationPageRequested(path)
+            onNewBookPageRequested: newBookPageRequested(params)
+            onReplacingPageRequested: root.replacingPageRequested(path)
         }
 
         Binding {
             target: loader.item
             property: "sourceUrl"
-            value: root.source
+            value: root.path
             when: loader.status == Loader.Ready
         }
 
@@ -80,6 +82,7 @@ Page {
         ErrorView {
             id: errorView
             anchors.fill: parent
+            anchors.margins: units.gu(1)
             visible: false
         }
     }

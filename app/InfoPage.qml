@@ -19,21 +19,19 @@
   **/
 
 import QtQuick 2.0
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.2
 
-Item {
+Page {
     id: root
-    property alias message: label.text
-
-    function show()
-    {
-        visible = true;
-    }
-    
+    title: i18n.tr("About")
     Label {
-        id: label
-        anchors.centerIn: parent
-        width: parent.width
+        id: aboutLabel
         wrapMode: Text.Wrap
+        anchors.fill: parent
+        anchors.margins: units.gu(1)
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+        text: i18n.tr("This program is a simple OPDS Viewer.<br>It allows you to:<ul><li>Browse different OPDS catalogs.</li><li>View book information.</li><li>Open book in 3rd-party app.</li></ul><br>©2015 Mikhail Ivchenko <ematirov@gmail.com> under GNU GPLv3 license.<br><br>The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.<br><br><b>Warning:</b><br>Author doesn't take any responsibility for content of third-party OPDS catalogs. It's possbile that some catalogs can have illegal in your country entries.")
     }
 }

@@ -20,6 +20,8 @@
 
 #include "NavigationFeedElement.h"
 
+#include <QDebug>
+
 NavigationFeedElement::NavigationFeedElement(const QString &url) :
     LinkElement(url)
 {
