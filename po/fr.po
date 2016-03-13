@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-04 21:58+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../app/BookPage.qml:127
+msgid "Open"
+msgstr "Ouvrir"
+
+#: ../app/DownloadAction.qml:12
+msgid "Buy"
+msgstr "Acheter"
+
+#: ../app/DownloadAction.qml:14
+#, qt-format
+msgid "%1 (sample)"
+msgstr "%1 (extrait)"
+
+#: ../app/InfoPage.qml:27 ../app/SourcesPage.qml:45
+msgid "About"
+msgstr "À propos"
+
+#: ../app/InfoPage.qml:35
+msgid ""
+"This program is a simple OPDS Viewer.<br>It allows you to:<ul><li>Browse "
+"different OPDS catalogs.</li><li>View book information.</li><li>Open book in "
+"3rd-party app.</li></ul><br>©2015 Mikhail Ivchenko <ematirov@gmail.com> "
+"under GNU GPLv3 license.<br><br>The program is provided AS IS with NO "
+"WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY AND "
+"FITNESS FOR A PARTICULAR PURPOSE.<br><br><b>Warning:</b><br>Author doesn't "
+"take any responsibility for content of third-party OPDS catalogs. It's "
+"possbile that some catalogs can have illegal in your country entries."
+msgstr ""
+"Ce programme est une visionneuse OPDS simple.<br>Il vous permet de[nbsp]:<ul><li>Parcourir "
+"différents catalogues OPDS.</li><li>Consulter les informations du livre.</li><li>Ouvrir le livre dans "
+"une applicationn tierce.</li></ul><br>©2015 Mikhail Ivchenko <ematirov@gmail.com> "
+"sous licence GNU GPLv3.<br><br>Le programme est fournit EN L'ÉTAT et SANS "
+"GARANTIE D'AUCUNE SORTE, Y COMPRIS LA GARANTIE DE CONCEPTION, DE COMMERCIALISATION ET "
+"D'ADÉQUATION À UN USAGE PARTICULIER.<br><br><b>Attention[nbsp]:</b><br>L'auteur ne "
+"prend aucune responsabilité concernant le contenu des catalogues OPDS tiers. Il est "
+"possible que certains catalogues ne soient pas autorisés dans votre pays."
+
+#: ../app/NavigationPage.qml:26 ../app/NextLinkEntry.qml:31
+msgid "Loading..."
+msgstr "Chargement..."
+
+#: ../app/NavigationView.qml:46
+msgid "Sorry, authorization isn't supported yet."
+msgstr "Désolé, l'autorisation n'est pas en core prise en charge."
+
+#: ../app/NewSourceDialog.qml:7
+msgid "Add new catalog"
+msgstr "Ajouter un nouveau catalogue"
+
+#: ../app/NewSourceDialog.qml:45
+msgid "URL of catalog"
+msgstr "URL du catalogue"
+
+#: ../app/NewSourceDialog.qml:59
+msgid "Cancel"
+msgstr "Annuler"
+
+#: ../app/NewSourceDialog.qml:67
+msgid "Add"
+msgstr "Ajouter"
+
+#: ../app/NextLinkEntry.qml:31
+msgid "Next page"
+msgstr "Page suivante"
+
+#: ../app/SourcesPage.qml:30
+msgid "Choose catalog"
+msgstr "Choisir un catalogue"
+
+#: ../app/SourcesPage.qml:38
+msgid "Add..."
+msgstr "Ajout..."
+
+#: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:52
+msgid "mobi"
+msgstr "mobi"
+
+#: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:53
+msgid "epub"
+msgstr "epub"
+
+#: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:54
+msgid "rtf"
+msgstr "rtf"
+
+#: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:55
+msgid "txt"
+msgstr "txt"
+
+#: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:56
+#: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:57
+msgid "html"
+msgstr "html"
+
+#: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:58
+msgid "fb2"
+msgstr "fb2"
+
+#: ../backend/modules/OVU/Elements/AcquisitionElement.cpp:59
+msgid "pdf"
+msgstr "pdf"
+
+#: ../backend/modules/OVU/Feed.cpp:99
+msgid "Parsing failed."
+msgstr "L'analyse a échoué."
+
+#: /home/ematirov/Projects/build-OVU-Ubuntu_Device_GCC_armhf_ubuntu_sdk_15_04_vivid-Default/po/OVU.desktop.in.h:1
+msgid "OVU"
+msgstr "OVU"
+
+#: /home/ematirov/Projects/build-OVU-Ubuntu_Device_GCC_armhf_ubuntu_sdk_15_04_vivid-Default/po/OVU.desktop.in.h:2
+msgid "A simple OPDS Viewer for Ubuntu"
+msgstr "Une visionneuse OPDS simple pour Ubuntu"
